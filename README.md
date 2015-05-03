@@ -10,7 +10,7 @@ One must import the file cookdsp.jsfx-inc in the plugin before using any of the 
 Installation
 ------------
 
-To install the CookDSP library, put the file _cookdsp.jsfx-inc_  and the folder _cookdsp_ in the Reaper's Effects directory. The location of this directory is (where <username> should be replaced by the name of the user's home folder) :
+To install the CookDSP library, put the file _cookdsp.jsfx-inc_  and the folder _cookdsp_ in the Reaper's Effects directory. The location of this directory is (where \<username\> should be replaced by the name of the user's home folder) :
 
 Windows XP :
 

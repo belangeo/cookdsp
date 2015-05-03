@@ -1,0 +1,634 @@
+/////////////////////////////////////////////////////////////////
+// Copyright (c) - 2014 - Olivier Belanger                     //
+// Permission to use, copy, modify, and/or distribute this     //
+// software for any purpose with or without fee is hereby      //
+// granted, provided that the above copyright notice and this  //
+// permission notice appear in all copies. CookDSP IS PROVIDED //
+// "AS IS", WITHOUT WARRANTY OF ANY KIND FROM THE AUTHOR.      //
+/////////////////////////////////////////////////////////////////
+
+@init
+
+/******************************************************* 
+DISTO
+======
+
+Arc tangent distortion.
+
+
+Description
+-----------
+
+The disto object applies an arc tangent distortion with controllable 
+drive to the input signal.
+
+It must be used with a variable name as prefix (object oriented).
+
+Initializer
+-----------
+
+#### disto(drive, slope) ####
+
+Initialises a distortion object. `drive` is the amount of distortion 
+applied to the signal, between 0 and 1 and `cutoff` is the cutoff
+frequency (Hz) of a second order lowpass filter applied post process.  
+
+Methods
+-------
+
+#### disto_set_drive(drive) ####
+
+Sets a new drive, between 0 and 1, to the distortion.
+
+#### disto_set_cutoff(cutoff) ####
+
+Sets a new cutoff, in Hz, to the post lowpass filter.
+
+#### disto_do(signal) ####
+
+Processes one samples of an input signal `signal` and outputs
+the distorted sample.
+
+Example
+-------
+
+    desc:Simple Distortion
+
+    import cookdsp.jsfx-inc
+
+    slider1:0.7<0,1>Drive
+    slider2:5000<500,10000>Lowpass Cutoff
+
+    @init
+    disL.disto(slider1, slider2);
+    disR.disto(slider1, slider2);
+
+    @slider
+    disL.disto_set_drive(slider1);
+    disR.disto_set_drive(slider1);
+    disL.disto_set_cutoff(slider2);
+    disR.disto_set_cutoff(slider2);
+
+    @sample
+    amp = scale(slider1, 0, 1, 0.7, 0.4, 2);
+    spl0 = disL.disto_do(spl0) * amp;
+    spl1 = disR.disto_do(spl1) * amp;
+
+********************************************************/
+function disto(drive cutoff)
+(
+    this.ny = srate * 0.49;
+    drive < 0 ? drive = 0 : drive > 1 ? drive = 1;
+    this.drive = drive;
+    this.d = (1.0 - this.drive) * 0.3999;
+    cutoff < 20 ? cutoff = 20 : cutoff > this.ny ? cutoff = this.ny; 
+    this.cutoff = cutoff;
+    this.c = exp(-2 * $pi * this.cutoff / srate);
+    this.y1 = this.y2 = 0.0;
+);
+
+function disto_set_drive(drive)
+(
+    drive < 0 ? drive = 0 : drive > 1 ? drive = 1;
+    this.drive = drive;
+    this.d = (1.0 - this.drive) * 0.3999;
+);
+
+function disto_set_cutoff(cutoff)
+(
+    cutoff < 20 ? cutoff = 20 : cutoff > this.ny ? cutoff = this.ny; 
+    this.cutoff = cutoff;
+    this.c = exp(-2 * $pi * this.cutoff / srate);
+);
+
+function disto_do(signal)
+(
+    tmp_ = atan2(signal, this.d);
+    this.y1 = tmp_ + (this.y1 - tmp_) * this.c;
+    this.y2 = this.y1 + (this.y2 - this.y1) * this.c;
+    this.y2;
+);
+
+/******************************************************* 
+HARMON
+======
+
+Generates harmonizing voices in synchrony with its audio input.
+
+Description
+-----------
+
+A harmonizer is a pitch shifter that does not stretch the original
+sound in time. I works directly on a live input, by overlapping 
+two time-varying delay lines.
+
+It must be used with a variable name as prefix (object oriented).
+
+Initializer
+-----------
+
+#### harmon(transpo, feedback, winsize) ####
+
+Initializes the harmonizer object with a transposition
+factor `transpo`, defined in semitones (-48 to 48). The 
+`feedback` argument is the amount of output signal sent 
+back into the delay lines (in the range -1 to 1). The 
+`winsize` argument is the length of the delay lines (aka 
+window size) in seconds (must be in the range 0.001 to 1).
+ 
+Methods
+-------
+
+#### harmon_set_transpo(transpo) ####
+
+Sets a new transposition `transpo`, in semitones.
+
+#### harmon_set_feedback(feedback) ####
+
+Sets a new feedback `feedback`, between -1 and 1.
+
+#### harmon_set_winsize() ####
+
+Sets a new window size `winsize`, between 0.001 and 1 second.
+
+#### harmon_do(signal) ####
+
+Processes one sample of the input signal and returns the
+pitch shifted sample.
+
+Example
+-------
+
+    desc:Two Voices Harmonizer
+
+    import cookdsp.jsfx-inc
+
+    slider1:-7<-24,24,1>Transposition Left
+    slider2:4<-24,24,1>Transposition Right
+    slider3:0<-1,1>Feedback Level
+    slider4:0.1<0.001,1>Window Size In Seconds
+
+    @init
+    h1.harmon(slider1, slider3, slider4);
+    h2.harmon(slider2, slider3, slider4);
+
+    @slider
+    h1.harmon_set_transpo(slider1);
+    h2.harmon_set_transpo(slider2);
+    h1.harmon_set_feedback(slider3);
+    h2.harmon_set_feedback(slider3);
+    h1.harmon_set_winsize(slider4);
+    h2.harmon_set_winsize(slider4);
+
+    @sample
+    spl0 += h1.harmon_do(spl0); 
+    spl1 += h2.harmon_do(spl1); 
+    spl0 *= 0.5; spl1 *= 0.5;
+
+********************************************************/
+function harmon(transpo feedback winsize)
+(
+    transpo < -48 ? transpo = -48 : transpo > 48 ? transpo = 48;
+    this.transpo = transpo;
+    feedback < -1 ? feedback = -1 : feedback > 1 ? feedback = 1;
+    this.feedback = feedback;
+    winsize < 0.001 ? winsize = 0.001 : winsize > 1 ? winsize = 1;
+    this.winsize = winsize;
+    this.env.buffer(2048);
+    this.env.buffer_window(6);
+    this.env.buffer_normalize(0.7);
+    this.ratio = pow(2., this.transpo / 12.);
+    this.rate = -(this.ratio-1) / this.winsize;
+    this.ph.phasor(this.rate, 0);
+    this.del.delay(srate);
+);
+
+function harmon_set_transpo(transpo)
+(
+    transpo < -48 ? transpo = -48 : transpo > 48 ? transpo = 48;
+    this.transpo = transpo;
+    this.ratio = pow(2., this.transpo / 12.);
+    this.rate = -(this.ratio-1) / this.winsize;
+    this.ph.phasor_set_freq(this.rate);
+);
+
+function harmon_set_feedback(feedback)
+(
+    feedback < -1 ? feedback = -1 : feedback > 1 ? feedback = 1;
+    this.feedback = feedback;
+);
+
+function harmon_set_winsize(winsize)
+(
+    winsize < 0.001 ? winsize = 0.001 : winsize > 1 ? winsize = 1;
+    this.winsize = winsize;
+    this.rate = -(this.ratio-1) / this.winsize;
+    this.ph.phasor_set_freq(this.rate);
+);
+
+function harmon_do(signal)
+(
+    ph1_ = this.ph.phasor_do();
+    val1_ = this.del.delay_fsread3(ph1_ * this.winsize) * this.env.buffer_fnread2(ph1_);
+    ph2_ = wrap(ph1_ + 0.5, 0, 1);
+    val2_ = this.del.delay_fsread3(ph2_ * this.winsize) * this.env.buffer_fnread2(ph2_);
+    val_ = val1_ + val2_;
+    this.del.delay_write(signal + val_ * this.feedback);
+    val_;
+);
+
+/******************************************************* 
+VOCODER
+=======
+
+Applies the spectral envelope of a first sound to the spectrum of a second sound.
+
+Description
+-----------
+
+The vocoder is an analysis/synthesis system, historically used to reproduce 
+human speech. In the encoder, the first input (spectral envelope) is passed 
+through a multiband filter, each band is passed through an envelope follower, 
+and the control signals from the envelope followers are communicated to the 
+decoder. The decoder applies these (amplitude) control signals to corresponding 
+filters modifying the second source (exciter).
+
+It must be used with a variable name as prefix (object oriented).
+
+Initializer
+-----------
+
+#### vocoder(basefreq, freqspread, q, slope, stages) ####
+
+Initializes the vocoder object. The `basefreq` argument is the center 
+frequency of the first band. This frequency is used to compute the upper 
+band frequencies. The `freqspread` argument is the spreading factor used 
+to compute the upper band frequencies (in relation to `basefreq`). Each 
+band has a frequency according to the relation `basefreq * pow(order, freqspread)`, 
+where order is the harmonic rank of the band. The `q` argument is the Q of the
+filters (the inverse of the bandwidth). Higher values imply more resonance 
+around the center frequency of the filters. The `slope` argument is the time 
+response of the envelope follower. Lower values mean smoother changes, 
+while higher values mean a better time accuracy. The `stages` argument is the
+number of bands in the filter bank. Defines the number of notches in the spectrum.
+The number of bands is only available at initialization time.
+
+Methods
+-------
+
+#### vocoder_set_basefreq(basefreq) ####
+
+Sets a new base frequency `basefreq`, in hz, and re-compute the filters 
+coefficients.
+
+#### vocoder_set_freqspread(freqspread) ####
+
+Sets a new frequency spread `freqspread` and re-compute the filters 
+coefficients.
+
+#### vocoder_set_q() ####
+
+Sets a new filter Q `q` and re-compute the filters coefficients.
+
+#### vocoder_do(signal, excite) ####
+
+Apply the spectrum envelope of the signal `signal` onto the spectrum of
+the signal `excite` and returns the resulting signal.
+
+Example
+-------
+
+    desc:Stereo Vocoder
+
+    import cookdsp.jsfx-inc
+
+    slider1:80<40,300>Base Frequency (Hz)
+    slider2:1.2<0.5,2>Frequency Spread
+    slider3:50<1,200>Filters Q
+    slider4:0.5<0,1>Follower Slope
+    slider5:24<4,64,1>Number of Bands (init only)
+
+    @init
+    voc0.vocoder(slider1, slider2, slider3, slider4, slider5); 
+    voc1.vocoder(slider1, slider2, slider3, slider4, slider5); 
+
+    @slider
+    voc0.vocoder_set_basefreq(slider1);
+    voc1.vocoder_set_basefreq(slider1);
+    voc0.vocoder_set_freqspread(slider2);
+    voc1.vocoder_set_freqspread(slider2);
+    voc0.vocoder_set_q(slider3);
+    voc1.vocoder_set_q(slider3);
+    voc0.vocoder_set_slope(slider4);
+    voc1.vocoder_set_slope(slider4);
+
+    @sample
+    // Use white noise as exciter
+    noise = rand(2) - 1;
+    spl0 = voc0.vocoder_do(spl0, noise);
+    spl1 = voc1.vocoder_do(spl1, noise);
+
+********************************************************/
+function _vocoder_compute_coeffs()
+(
+    c_ = 0;
+    loop(this.stages,
+      f_ = this.basefreq * pow(c_+1, this.freqspread);
+      f_ < 10 ? f_ = 10 : f_ > this.ny ? f_ = this.ny;
+      bw_ = f_ / this.q;
+      this.cB2[c_] = exp(-2 * $pi / srate * bw_);
+      this.cB1[c_] = (-4.0 * this.cB2[c_]) / (1.0 + this.cB2[c_]) * cos(2 * $pi * f_ / srate);
+      this.cA1[c_] = 1.0 - sqrt(this.cB2[c_]);
+      c_ += 1;
+    );
+);
+
+function vocoder(basefreq freqspread q slope stages)
+(
+    this.ny = srate * 0.49;
+    this.stages = stages;
+    this.slope = slope;
+    this.q = q;
+    this.freqspread = freqspread;
+    this.basefreq = basefreq;
+    this.aX1 = memalloc(this.stages);
+    this.aX2 = memalloc(this.stages);
+    this.aY1 = memalloc(this.stages);
+    this.aY2 = memalloc(this.stages);
+    this.sX1 = memalloc(this.stages);
+    this.sX2 = memalloc(this.stages);
+    this.sY1 = memalloc(this.stages);
+    this.sY2 = memalloc(this.stages);
+    this.cA1 = memalloc(this.stages);
+    this.cB1 = memalloc(this.stages);
+    this.cB2 = memalloc(this.stages);
+    this.fY1 = memalloc(this.stages);
+    this.follF = pow(this.slope, 3) * 99.5 + 0.5;
+    this.fC = exp(-2 * $pi * this.follF / srate);
+    this._vocoder_compute_coeffs();
+);
+
+function vocoder_set_basefreq(basefreq)
+(
+    basefreq != this.basefreq ? (
+        this.basefreq = basefreq;
+        this._vocoder_compute_coeffs();
+    );
+);
+
+function vocoder_set_freqspread(freqspread)
+(
+    freqspread != this.freqspread ? (
+        this.freqspread = freqspread;
+        this._vocoder_compute_coeffs();
+    );
+);
+
+function vocoder_set_q(q)
+(
+    q != this.q ? (
+        this.q = q;
+        this._vocoder_compute_coeffs();
+    );
+);
+
+function vocoder_set_slope(slope)
+(
+    slope != this.slope ? (
+        this.slope = slope;
+        this.follF = pow(this.slope, 3) * 99.5 + 0.5;
+        this.fC = exp(-2 * $pi * this.follF / srate);
+    );
+);
+
+function vocoder_do(signal excite)
+(
+    c_ = 0;
+    output_ = 0;
+    loop(this.stages,
+        // Analysis
+        anal_ = (this.cA1[c_] * signal) - (this.cA1[c_] * this.aX2[c_]) - (this.cB1[c_] * this.aY1[c_]) - (this.cB2[c_] * this.aY2[c_]);
+        this.aX2[c_] = this.aX1[c_]; this.aX1[c_] = signal; this.aY2[c_] = this.aY1[c_]; this.aY1[c_] = anal_;
+        // Synthesis
+        synt_ = (this.cA1[c_] * excite) - (this.cA1[c_] * this.sX2[c_]) - (this.cB1[c_] * this.sY1[c_]) - (this.cB2[c_] * this.sY2[c_]);
+        this.sX2[c_] = this.sX1[c_]; this.sX1[c_] = excite; this.sY2[c_] = this.sY1[c_]; this.sY1[c_] = synt_;
+        // Envelope follower
+        anal_ < 0 ? anal_ = -anal_;
+        this.fY1[c_] = anal_ + (this.fY1[c_] - anal_) * this.fC;
+        // Output accumulator
+        output_ += synt_ * this.fY1[c_];
+        c_ += 1;
+    );
+    output_ * this.q;
+);
+
+/******************************************************* 
+WGVERB
+======
+
+8 delay lines mono FDN reverb.
+
+Description
+-----------
+
+8 delay lines FDN (Feedback Delay Network) reverb, with feedback matrix 
+based upon physical modeling scattering junction of 8 lossless waveguides 
+of equal characteristic impedance.
+
+It must be used with a variable name as prefix (object oriented).
+
+Initializer
+-----------
+
+#### wgverb(feed, cutoff, bal) ####
+
+Initializes the `wgverb` object with a feedback factor `feed`, 
+defined between 0 and 1. The `cutoff` argument is the cutoff
+frequency of the internal lowpass filters. The `bal` argument 
+allows to control the balance between the dry signal (bal=0)
+and the reverberated one (bal=1).
+ 
+Methods
+-------
+
+#### wgverb_set_feed(feed) ####
+
+Sets a new feedbakc factor `feed`, between 0 and 1.
+
+#### wgverb_set_cutoff(cutoff) ####
+
+Sets a new lowpass cutoff frequency `cutoff`, in Hz.
+
+#### wgverb_set_bal() ####
+
+Sets a new balance factor `bal`, between 0 and 1.
+
+#### wgverb_do(signal) ####
+
+Processes one sample of the input signal and returns the
+reverberated sample.
+
+Example
+-------
+
+    desc:Simple Reverberation
+
+    import cookdsp.jsfx-inc
+
+    slider1:0.75<0,1>Feedback
+    slider2:5000<200,10000>Cutoff
+    slider3:0.25<0,1>Balance
+    slider4:0.3<0,1>Post-Gain
+
+    @init
+    revL.wgverb(slider1, slider2, slider3);
+    revR.wgverb(slider1, slider2, slider3);
+
+    @slider
+    revL.wgverb_set_feed(slider1);
+    revR.wgverb_set_feed(slider1);
+    revL.wgverb_set_cutoff(slider2);
+    revR.wgverb_set_cutoff(slider2);
+    revL.wgverb_set_bal(slider3);
+    revR.wgverb_set_bal(slider3);
+
+    @sample
+    spl0 = revL.wgverb_do(spl0) * slider4; 
+    spl1 = revR.wgverb_do(spl1) * slider4;
+
+********************************************************/
+function _wgverb_init()
+(
+    r1_ = 0.001 * srate / 4;
+    r2_ = 0.0011 * srate / 4;
+    r3_ = 0.0017 * srate / 4;
+    r4_ = 0.0006 * srate / 4;
+    r5_ = 0.0013 * srate / 4;
+    r6_ = 0.0009 * srate / 4;
+    r7_ = 0.0016 * srate / 4;
+    r8_ = 0.0005 * srate / 4;
+    this.r1.random(-r1_, r1_, 1.51, 0);
+    this.r2.random(-r2_, r2_, 2.5, 0);
+    this.r3.random(-r3_, r3_, 0.911, 0);
+    this.r4.random(-r4_, r4_, 2.473, 0);
+    this.r5.random(-r5_, r5_, 1.141, 0);
+    this.r6.random(-r6_, r6_, 0.497, 0);
+    this.r7.random(-r7_, r7_, 0.391, 0);
+    this.r8.random(-r8_, r8_, 1.621, 0);
+    this.t1 = 2473 * (srate / 44100.);
+    this.t2 = 2767 * (srate / 44100.);
+    this.t3 = 3217 * (srate / 44100.);
+    this.t4 = 3557 * (srate / 44100.);
+    this.t5 = 3907 * (srate / 44100.);
+    this.t6 = 4127 * (srate / 44100.);
+    this.t7 = 2143 * (srate / 44100.);
+    this.t8 = 1933 * (srate / 44100.);
+    this.d1.delay(ceil(this.t1 + 0.002 * srate));
+    this.d2.delay(ceil(this.t2 + 0.002 * srate));
+    this.d3.delay(ceil(this.t3 + 0.002 * srate));
+    this.d4.delay(ceil(this.t4 + 0.002 * srate));
+    this.d5.delay(ceil(this.t5 + 0.002 * srate));
+    this.d6.delay(ceil(this.t6 + 0.002 * srate));
+    this.d7.delay(ceil(this.t7 + 0.002 * srate));
+    this.d8.delay(ceil(this.t8 + 0.002 * srate));
+);
+
+function wgverb(feed cutoff bal)
+(
+    this.ny = srate / 2;
+    feed < 0 ? feed = 0 : feed > 1 ? feed = 1;
+    this.feed = feed;
+    cutoff < 20 ? cutoff = 20 : cutoff > this.ny ? cutoff = this.ny;
+    this.cutoff = cutoff;
+    bal < 0 ? bal = 0 : bal > 1 ? bal = 1;
+    this.bal = bal;
+    
+    this.c2 = exp(-2 * $pi * this.cutoff / srate);
+    this.ys = memalloc(8);
+    this._wgverb_init();
+    this.total = 0.0;
+);
+
+function wgverb_set_feed(feed)
+(
+    feed < 0 ? feed = 0 : feed > 1 ? feed = 1;
+    this.feed = feed;
+);
+
+function wgverb_set_cutoff(cutoff)
+(
+    cutoff < 20 ? cutoff = 20 : cutoff > this.ny ? cutoff = this.ny;
+    this.cutoff = cutoff;
+    this.c2 = exp(-2 * $pi * this.cutoff / srate);
+);
+
+function wgverb_set_bal(bal)
+(
+    bal < 0 ? bal = 0 : bal > 1 ? bal = 1;
+    this.bal = bal;
+);
+
+function wgverb_do(signal)
+(
+    junc_ = this.total * 0.25;
+    this.total = 0.0;
+
+    v_ = this.d1.delay_fread2(this.t1 + this.r1.random_do());
+    v_ *= this.feed;
+    v_ += (this.ys[0] - v_) * this.c2;
+    this.total += v_;
+    this.d1.delay_write(signal + junc_ - this.ys[0]);
+    this.ys[0] = v_;
+    
+    v1_ = this.d2.delay_fread2(this.t2 + this.r2.random_do());
+    v_ *= this.feed;
+    v_ += (this.ys[1] - v_) * this.c2;
+    this.total += v_;
+    this.d2.delay_write(signal + junc_ - this.ys[1]);
+    this.ys[1] = v_;
+
+    v_ = this.d3.delay_fread2(this.t3 + this.r3.random_do());
+    v_ *= this.feed;
+    v_ += (this.ys[2] - v_) * this.c2;
+    this.total += v_;
+    this.d3.delay_write(signal + junc_ - this.ys[2]);
+    this.ys[2] = v_;
+
+    v_ = this.d4.delay_fread2(this.t4 + this.r4.random_do());
+    v_ *= this.feed;
+    v_ += (this.ys[3] - v_) * this.c2;
+    this.total += v_;
+    this.d4.delay_write(signal + junc_ - this.ys[3]);
+    this.ys[3] = v_;
+
+    v_ = this.d5.delay_fread2(this.t5 + this.r5.random_do());
+    v_ *= this.feed;
+    v_ += (this.ys[4] - v_) * this.c2;
+    this.total += v_;
+    this.d5.delay_write(signal + junc_ - this.ys[4]);
+    this.ys[4] = v_;
+
+    v_ = this.d6.delay_fread2(this.t6 + this.r6.random_do());
+    v_ *= this.feed;
+    v_ += (this.ys[5] - v_) * this.c2;
+    this.total += v_;
+    this.d6.delay_write(signal + junc_ - this.ys[5]);
+    this.ys[5] = v_;
+
+    v_ = this.d7.delay_fread2(this.t7 + this.r7.random_do());
+    v_ *= this.feed;
+    v_ += (this.ys[6] - v_) * this.c2;
+    this.total += v_;
+    this.d7.delay_write(signal + junc_ - this.ys[6]);
+    this.ys[6] = v_;
+
+    v_ = this.d8.delay_fread2(this.t8 + this.r8.random_do());
+    v_ *= this.feed;
+    v_ += (this.ys[7] - v_) * this.c2;
+    this.total += v_;
+    this.d8.delay_write(signal + junc_ - this.ys[7]);
+    this.ys[7] = v_;
+
+    rev_ = this.total * 0.25;
+    signal + (rev_ - signal) * this.bal;
+);

@@ -1,0 +1,35 @@
+#### Complete plugin ####
+
+    desc:Scaling
+
+    import cookdsp.jsfx-inc
+
+    slider1:0<0,1>Non Linear Scaling
+     
+    @init 
+    freq = 1;
+    val = 0;
+    twopi = 2 * $pi;
+
+    @slider
+    freq = scale(slider1, 0, 1, 1, 2500, 10);
+    inc = freq / srate;
+
+    @sample
+    lfo = sin(twopi * val);
+    val += inc;
+    val > twopi ? val -= twopi;
+    spl0 *= lfo;
+    spl1 *= lfo;
+
+    @gfx 250 50
+    // draw background
+    gfx_a = 1;
+    gfx_r = gfx_g = gfx_b = 1;
+    gfx_x = gfx_y = 0;
+    gfx_rectto(gfx_w,gfx_h);
+    gfx_r = gfx_g = gfx_b = 0;
+    gfx_x = gfx_y = 10;
+    gfx_drawstr("True Frequency: ");
+    gfx_drawnumber(freq, 6);
+

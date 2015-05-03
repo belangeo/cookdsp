@@ -1,0 +1,218 @@
+/////////////////////////////////////////////////////////////////
+// Copyright (c) - 2014 - Olivier Belanger                     //
+// Permission to use, copy, modify, and/or distribute this     //
+// software for any purpose with or without fee is hereby      //
+// granted, provided that the above copyright notice and this  //
+// permission notice appear in all copies. CookDSP IS PROVIDED //
+// "AS IS", WITHOUT WARRANTY OF ANY KIND FROM THE AUTHOR.      //
+/////////////////////////////////////////////////////////////////
+
+@init
+
+/******************************************************* 
+PHASOR
+======
+
+Generate an ascending ramp with sharp corner (sawtooth wave).
+
+
+Description
+-----------
+
+The phasor function initializes an ascending ramp (from 0 to 1) 
+with the given frequency and phase. Useful for looping over the 
+content of a buffer to produce arbitrary waveforms.
+
+It must be used with a variable name as prefix (object oriented).
+
+Initializer
+-----------
+
+#### phasor(freq, phase) ####
+
+Initializes the oscillator with the given frequency `freq`, in Hz,
+and initial phase `phase`, between 0 and 1.
+
+Methods
+-------
+
+#### phasor_set_freq(freq) ####
+
+Sets a new frequency `freq`, in Hz, to the oscillator.
+
+#### phasor_set_phase(phase) ####
+
+Sets a new phase `phase`, between 0 and 1, to the oscillator.
+
+#### phasor_reset() ####
+
+Resets immediately the oscillator to 0.
+
+#### phasor_do() ####
+
+Processes one sample of the oscillator and increment the internal
+reading pointer. Returns the current value, between 0 and 1, of 
+the oscilator.
+
+Example
+-------
+
+    desc:Alternating Channels
+
+    import cookdsp.jsfx-inc
+
+    slider1:4<0.25,20>LFO Speed
+
+    @init
+    // Initialize a buffer
+    b.buffer(8192);
+    // Write a square wave into it
+    b.buffer_square(50);
+    // Remove the negative part
+    b.buffer_clip(0, 1);
+    // Initialize an upward ramp
+    ph.phasor(slider1, 0);
+
+    @slider
+    ph.phasor_set_freq(slider1);
+
+    @sample
+    // Compute the phase for the left channel
+    phL = ph.phasor_do();
+    // 180 degrees out-of-phase for the right channel
+    phR = wrap(phL+0.5, 0, 1);
+    // Read the buffer and multiply each channel
+    spl0 *= b.buffer_fnread2(phL);
+    spl1 *= b.buffer_fnread2(phR);
+
+********************************************************/
+function phasor(freq phase)
+(
+    phase < 0 ? phase = 0 : phase > 1 ? phase = 1;
+    this.phase = phase;
+    this.freq = freq;
+    this.inc = this.freq / srate;
+    this.current = 0;
+);
+
+function phasor_set_freq(freq)
+(
+    this.freq = freq;
+    this.inc = this.freq / srate;
+);
+
+function phasor_set_phase(phase)
+(
+    phase < 0 ? phase = 0 : phase > 1 ? phase = 1;
+    this.phase = phase;    
+);
+
+function phasor_reset()
+(
+    this.current = 0;
+);
+
+function phasor_do()
+(
+    val = this.current + this.phase;
+    val >= 1 ? val -= 1 : val < 0 ? val += 1;
+    this.current += this.inc;
+    this.current >= 1 ? this.current -= 1 : this.current < 0 ? this.current += 1;
+    val;
+);
+
+/******************************************************* 
+SINE
+====
+
+Generate a sine wave oscillator.
+
+
+Description
+-----------
+
+The `sine` object initializes a sine wave oscillator with the 
+given frequency and phase.
+
+It must be used with a variable name as prefix (object oriented).
+
+Initializer
+-----------
+
+#### sine(freq, phase) ####
+
+Initializes the oscillator with the given frequency `freq`, in Hz,
+and initial phase `phase`, between 0 and 1.
+
+Methods
+-------
+
+#### sine_set_freq(freq) ####
+
+Sets a new frequency `freq`, in Hz, to the oscillator.
+
+#### sine_set_phase(phase) ####
+
+Sets a new phase `phase`, between 0 and 1, to the oscillator.
+
+#### sine_reset() ####
+
+Resets immediately the oscillator to 0.
+
+#### sine_do() ####
+
+Processes one sample of the oscillator and increment the internal
+reading pointer. Returns the current value, between -1 and 1, of 
+the oscilator.
+
+Example
+-------
+
+    desc:Ring Modulation
+
+    import cookdsp.jsfx-inc
+
+    slider1:100<1,500>Modulation Frequency
+
+    @init
+    rm.sine(slider1, 0);
+
+    @slider
+    rm.sine_set_freq(slider1);
+
+    @sample
+    x = rm.sine_do();
+    spl0 *= x; 
+    spl1 *= x;
+
+********************************************************/
+function sine(freq phase)
+(
+    this.ph.phasor(freq, phase);
+    this.freq = this.ph.freq; 
+    this.phase = this.ph.phase;
+    this.buf.buffer(1024);
+    this.buf.buffer_gen10(1);
+);
+
+function sine_set_freq(freq)
+(
+    this.ph.phasor_set_freq(freq);
+    this.freq = this.ph.freq; 
+);
+
+function sine_set_phase(phase)
+(
+    this.ph.phasor_set_phase(phase);    
+    this.phase = this.ph.phase;
+);
+
+function sine_reset()
+(
+    this.ph.phasor_reset();
+);
+
+function sine_do()
+(
+    this.buf.buffer_fnread2(this.ph.phasor_do());
+);

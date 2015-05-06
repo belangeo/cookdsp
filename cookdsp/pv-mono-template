@@ -39,6 +39,6 @@ pin.ready ? (
   // New buffers ready for processing.
   // ... A simple thru...
   // compute the inverse PV.
-  pout.pvout_do(pin.real, pin.imag);
+  pout.pvout_do(pin.magn, pin.freq);
 );
 

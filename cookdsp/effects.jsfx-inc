@@ -27,7 +27,7 @@ It must be used with a variable name as prefix (object oriented).
 Initializer
 -----------
 
-#### disto(drive, slope) ####
+#### disto(drive, cutoff) ####
 
 Initialises a distortion object. `drive` is the amount of distortion 
 applied to the signal, between 0 and 1 and `cutoff` is the cutoff

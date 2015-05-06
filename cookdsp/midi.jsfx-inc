@@ -366,7 +366,7 @@ Example
     gain3 = env3.masr_do(amps[2]);
     // Filters the signal
     outl1 = f1.bp_do(spl0) * gain1; outr1 = f2.bp_do(spl1) * gain1;
-    outl2 = ff1.bp_do(spl0) * gain12; outr2 = ff2.bp_do(spl1) * gain2;
+    outl2 = ff1.bp_do(spl0) * gain2; outr2 = ff2.bp_do(spl1) * gain2;
     outl3 = fff1.bp_do(spl0) * gain3; outr3 = fff2.bp_do(spl1) * gain3;
     // Sum and output
     spl0 = outl1 + outl2 + outl3;

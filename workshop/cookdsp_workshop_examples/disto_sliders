@@ -1,0 +1,22 @@
+desc:Distortion with Controls
+
+import cookdsp.jsfx-inc
+
+slider1:0.9<0.5,1>Drive
+slider2:0.7<0,1>Slope
+
+@init
+dist1.disto(0.9, 3500);
+dist2.disto(0.9, 3500);
+
+@slider
+dist1.disto_set_drive(slider1);
+dist2.disto_set_drive(slider1);
+cutoff = scale(slider2, 0, 1, 500, 10000, 4);
+dist1.disto_set_cutoff(cutoff);
+dist2.disto_set_cutoff(cutoff);
+
+@sample
+spl0 = dist1.disto_do(spl0) * 0.5;
+spl1 = dist2.disto_do(spl1) * 0.5;
+

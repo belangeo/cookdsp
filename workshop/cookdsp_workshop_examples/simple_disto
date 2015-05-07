@@ -1,0 +1,12 @@
+desc:Simple Distortion
+
+import cookdsp.jsfx-inc
+
+@init
+dist1.disto(0.9, 3500);
+dist2.disto(0.9, 3500);
+
+@sample
+spl0 = dist1.disto_do(spl0) * 0.5;
+spl1 = dist2.disto_do(spl1) * 0.5;
+

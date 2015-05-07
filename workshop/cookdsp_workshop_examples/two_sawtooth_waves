@@ -1,0 +1,25 @@
+desc:Two Sawtooth Waves
+
+@init
+function saw(freq)
+(
+    this.phs = 0; 
+    this.inc = freq * 2 / srate;
+);
+
+function saw_do()
+(
+    val = this.phs;
+    this.phs += this.inc;
+    this.phs >= 1 ? this.phs -= 2;
+    val;
+);
+
+osc1.saw(100); 
+osc2.saw(150);
+
+@sample
+play_state == 1 ? (
+  spl0 = osc1.saw_do() * 0.5; 
+  spl1 = osc2.saw_do() * 0.5;
+)

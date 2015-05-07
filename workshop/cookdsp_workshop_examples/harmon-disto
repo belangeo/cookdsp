@@ -1,0 +1,36 @@
+desc:Harmonizer + Distortion
+
+import cookdsp.jsfx-inc
+
+slider1:-7<-12,12>Transposition
+slider2:0<0,1>Feedback
+slider3:0.8<0,1>Drive
+slider4:3500<200,10000>Cutoff Frequency
+
+@init
+harmL.harmon(slider1, slider2, 0.1);
+harmR.harmon(slider1, slider2, 0.1);
+distL.disto(slider3, slider4);
+distR.disto(slider3, slider4);
+lfo.sine(2, 0);
+lfo2.sine(2, 0.5);
+
+@slider
+harmL.harmon_set_transpo(slider1);
+harmR.harmon_set_transpo(slider1);
+harmL.harmon_set_feedback(slider2);
+harmR.harmon_set_feedback(slider2);
+//distL.disto_set_drive(slider3);
+//distR.disto_set_drive(slider3);
+distL.disto_set_cutoff(slider4);
+distR.disto_set_cutoff(slider4);
+
+@sample
+lfdrive = lfo.sine_do() * 0.45 + 0.5;
+lfdrive2 = lfo2.sine_do() * 0.45 + 0.5;
+distL.disto_set_drive(lfdrive);
+distR.disto_set_drive(lfdrive2);
+spl0 = harmL.harmon_do(spl0);
+spl1 = harmR.harmon_do(spl1);
+spl0 = distL.disto_do(spl0) * 0.5;
+spl1 = distR.disto_do(spl1) * 0.5;

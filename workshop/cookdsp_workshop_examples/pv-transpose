@@ -1,0 +1,44 @@
+desc: Phase Vocoder Mono Transposer
+
+import cookdsp.jsfx-inc
+
+slider1:2<0,5,1{256,512,1024,2048,4096,8192}>PV Size
+slider2:1<0,2,1{2,4,8}>Overlaps
+slider3:1<0.5,2>Transposition Factor
+
+@init
+pin.pvin(1024, 4);      // analysis
+pout.pvout(1024, 4);    // synthesis
+magn = memalloc(512);   // process magnitude buffer
+freq = memalloc(512);   // process true freq buffer
+
+@slider
+size = pow(2, slider1 + 8);
+olaps = pow(2, slider2 + 1);
+// If size or overlaps changed
+size != pin.size || olaps != pin.olaps ? (
+    // re-initialize PVs
+    pin.pvin_resize(size, olaps);
+    pout.pvout_resize(size, olaps);
+    // re-initialize process memories
+    magn = memalloc(size/2);
+    freq = memalloc(size/2);
+);
+
+@sample
+pin.pvin_do((spl0 + spl1) * 0.707);
+spl0 = spl1 = pout.pvout_get_output(pin.count);
+pin.ready ? (
+    memset(magn, 0, size/2);
+    memset(freq, 0, size/2);
+    k = 0;
+    while (k < size/2) (
+        index = floor(k * slider3);
+        index < size/2 ? (
+            magn[index] += pin.magn[k];
+            freq[index] = pin.freq[k] * slider3;
+        );
+        k += 1;
+    );
+    pout.pvout_do(magn, freq);
+);

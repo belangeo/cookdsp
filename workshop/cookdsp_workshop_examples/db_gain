@@ -1,0 +1,14 @@
+/* Stereo dB amplifier */
+desc:Stereo Amplifier
+
+import cookdsp.jsfx-inc
+
+slider1:0<-60,18>Decibel Gain
+
+@slider
+amp = dbtoa(slider1);
+
+@sample
+spl0 *= amp;
+spl1 *= amp;
+

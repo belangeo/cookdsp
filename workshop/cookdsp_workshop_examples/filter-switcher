@@ -1,0 +1,43 @@
+desc: Lowpass/Highpass Filter
+
+import cookdsp.jsfx-inc
+
+slider1:0.5<0, 1>Normalized Cutoff Frequency
+slider2:1000<100,10000>Cutoff Frequency Viewer
+slider3:0<0, 2, 1{Lowpass, Bandpass, Highpass}>Filter Type
+
+@init
+freq = scale(slider1, 0, 1, 100, 10000, 4);
+// Stereo Lowpass
+lpL.butlp(freq);
+lpR.butlp(freq);
+// Stereo Highpass
+hpL.buthp(freq);
+hpR.buthp(freq);
+// Stereo Highpass
+bpL.butbp(freq, 4);
+bpR.butbp(freq, 4);
+
+@slider
+freq = scale(slider1, 0, 1, 100, 10000, 4);
+slider2 = freq;
+lpL.butlp_set_freq(freq);
+lpR.butlp_set_freq(freq);
+hpL.buthp_set_freq(freq);
+hpR.buthp_set_freq(freq);
+bpL.butbp_set_freq(freq);
+bpR.butbp_set_freq(freq);
+
+@sample
+slider3 == 0 ? (
+    spl0 = lpL.butlp_do(spl0);
+    spl1 = lpR.butlp_do(spl1);
+) : 
+slider3 == 1 ? (
+    spl0 = bpL.butbp_do(spl0);
+    spl1 = bpR.butbp_do(spl1);
+) : (
+    spl0 = hpL.buthp_do(spl0);
+    spl1 = hpR.buthp_do(spl1);
+)
+

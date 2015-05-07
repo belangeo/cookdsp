@@ -1,0 +1,43 @@
+desc:Simple Midi Synth
+
+import cookdsp.jsfx-inc
+
+@init
+amp = midinote = 0;
+// Initializes the envelope
+env.masr(0.01, 1);
+// Initialize a square wave
+buf.buffer(1024);
+buf.buffer_square(20);
+// Initialize readers
+ph1.phasor(0, 0);
+ph2.phasor(0, 0);
+
+@block
+// Until all midi events have been processed
+while (n.notein()) (
+    // If midi event is a midi note
+    n.ok ? (
+        n.velocity > 0 ? (
+            // noteon 
+            midinote = n.pitch;
+            ph1.phasor_set_freq(mtof(midinote));
+            ph2.phasor_set_freq(mtof(midinote) * 1.01);
+            amp = n.velocity / 127;
+        ) : (
+            // noteoff
+            n.pitch == midinote ? amp = 0;
+        );
+    );
+);
+
+@sample
+// Compute the envelope
+gain = env.masr_do(amp);
+// Read the square wave
+spl0 = buf.buffer_fnread3(ph1.phasor_do());
+spl1 = buf.buffer_fnread3(ph2.phasor_do());
+// Apply gain envelope
+spl0 *= gain;
+spl1 *= gain;
+

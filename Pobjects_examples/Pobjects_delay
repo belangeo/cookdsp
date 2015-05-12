@@ -1,0 +1,33 @@
+// JSFX-CookDSP - Pobjects example
+// (c) Olivier Belanger - 2015 - belangeo@gmail.com
+
+desc:Multi-Tap Stereo Delay with Feedback
+
+import cookdsp.jsfx-inc
+
+slider1:.1<.001,1>Delay Time 1 (sec)
+slider2:.2<.001,1>Delay Time 2 (sec)
+slider3:.3<.001,1>Delay Time 3 (sec)
+slider4:.4<.001,1>Delay Time 4 (sec)
+slider5:0<-1,1>Feedback
+
+@init
+dtim = set(8, 0);
+del.Pdelay(set(8, srate));
+
+@slider
+dtim[1] = dtim[2] = slider1;
+dtim[3] = dtim[4] = slider2;
+dtim[5] = dtim[6] = slider3;
+dtim[7] = dtim[8] = slider4;
+f = slider5;
+
+@sample
+dout = del.Pdelay_sread2(dtim);
+s1 = spl0 + dout[1]*f; s2 = spl1 + dout[2]*f;
+s3 = spl0 + dout[3]*f; s4 = spl1 + dout[4]*f;
+s5 = spl0 + dout[5]*f; s6 = spl1 + dout[6]*f;
+s7 = spl0 + dout[7]*f; s8 = spl1 + dout[8]*f;
+del.Pdelay_write(tmp(s1,s2,s3,s4,s5,s6,s7,s8));
+outsig = sumchnls(2, dout);
+spl0 = outsig[0]*0.2; spl1 = outsig[1]*0.2;

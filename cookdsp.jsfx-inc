@@ -12,6 +12,10 @@
 import cookdsp/memalloc.jsfx-inc
 import cookdsp/scaling.jsfx-inc
 
+/* List management functions */
+
+import cookdsp/list.jsfx-inc
+
 /* Memory management objects */
 
 import cookdsp/buffer.jsfx-inc
@@ -53,8 +57,12 @@ import cookdsp/fftobjects.jsfx-inc
 
 import cookdsp/pvocobjects.jsfx-inc
 
+/* Polyphonic objects (multi-channel expansion) */
+
+import cookdsp/pobjects.jsfx-inc
+
 @init
 
-COOKDSP_VERSION = 0.1;
+COOKDSP_VERSION = 0.2;
 
 

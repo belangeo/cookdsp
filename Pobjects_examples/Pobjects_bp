@@ -1,0 +1,40 @@
+// JSFX-CookDSP - Pobjects example
+// (c) Olivier Belanger - 2015 - belangeo@gmail.com
+
+desc:Multi-band Bandpass Filter
+
+import cookdsp.jsfx-inc
+
+slider1:600<20, 1000>Filter Freq 1
+slider2:900<200, 1500>Filter Freq 2
+slider3:1500<1000, 2000>Filter Freq 3
+slider4:2000<1500, 3000>Filter Freq 4
+slider5:3000<2000, 4000>Filter Freq 5
+slider6:4000<2500, 5000>Filter Freq 6
+slider7:5000<4000, 7000>Filter Freq 7
+slider8:8000<5000, 10000>Filter Freq 8
+slider9:10<1,100>Filters Q
+
+@init
+freq = list(400,800,1200,1700,2500,3500,5000,8000);
+q = set(8,slider9);
+bps.Pbp(freq, q);
+
+@slider
+k = 1;
+while (k <= 8) (
+  freq[k] = slider(k);
+  q[k] = slider9;
+  k += 1;
+);
+bps.Pbp_set_freq(freq);
+bps.Pbp_set_q(q);
+gain = scale(slider9, 1, 100, 1, 10, 1);
+
+@sample
+outbp = bps.Pbp_do(tmp(spl0, spl1));
+outsig = sumchnls(2, outbp);
+spl0 = outsig[0] * gain;
+spl1=outsig[1] * gain;
+
+

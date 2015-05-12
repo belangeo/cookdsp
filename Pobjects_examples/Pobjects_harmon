@@ -1,0 +1,27 @@
+// JSFX-CookDSP - Pobjects example
+// (c) Olivier Belanger - 2015 - belangeo@gmail.com
+
+desc:Two-Voices Harmonizer
+
+import cookdsp.jsfx-inc
+
+slider1:-5<-12,12,1>Transpo Left In Semitones
+slider2:3<-12,12,1>Transpo Right In Semitones
+slider3:0<0,1>Feedback
+
+@init
+tran = list(slider1, slider2);
+feed = set(2, slider3);
+hrms.Pharmon(tran, feed, set(2, 0.1));
+
+@slider
+tran[1] = slider1; tran[2] = slider2;
+hrms.Pharmon_set_transpo(tran);
+feed[1] = slider3; feed[2] = slider3;
+hrms.Pharmon_set_feedback(feed);
+
+@sample
+out = hrms.Pharmon_do(tmp(spl0, spl1));
+spl0 = (spl0 + out[1]) * 0.4;
+spl1 = (spl1 + out[2]) * 0.4;
+

@@ -87,11 +87,6 @@ function memalloc(size)
     __memory_index = __memory_next + 8;
     __memory_next = __memory_index + size;
     memset(__memory_index, 0.0, size);
-    //k_ = 0;
-    //loop(size,
-    //    __memory_index[k_] = 0.0;
-    //    k_ += 1;
-    //);
     __memory_index;
 );
 
@@ -107,4 +102,3 @@ function memalloc(size, noreinit)
     );
     __memory_index;
 );
-

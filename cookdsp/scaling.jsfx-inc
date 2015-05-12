@@ -529,4 +529,3 @@ function scale(x xmin xmax ymin ymax ex)
     x *= (ymax - ymin);
     x + ymin;
 );
-

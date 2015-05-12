@@ -1,0 +1,44 @@
+// JSFX-CookDSP - Pobjects example
+// (c) Olivier Belanger - 2015 - belangeo@gmail.com
+
+desc:Multi-order Phaser
+
+import cookdsp.jsfx-inc
+
+slider1:200<50,2000>Base Frequency (Hz)
+slider2:1.2<0.5,2>Frequency Spread
+slider3:1000<100,2000>Bandwidth (Hz)
+slider4:0<0,0.99>Feedback
+
+@init
+NUM = 8;
+freqs = set(NUM, 0);
+k = 0;
+while (k < NUM) (
+    f = slider1 * pow(k, slider2);
+    k += 1;
+    freqs[k] = f;
+);
+bws = set(NUM, slider3);
+fds = set(NUM, slider4);
+flts.Papass(freqs, bws, fds);
+
+@slider
+k = 0;
+while (k < NUM) (
+    f = slider1 * pow(k, slider2);
+    k += 1;
+    freqs[k] = f;
+    bws[k] = slider3;
+    fds[k] = slider4;
+);
+flts.Papass_set_freq(freqs);
+flts.Papass_set_bw(bws);
+flts.Papass_set_feed(fds);
+gain = scale(slider4, 0, 1, 0.25, 0.01, 2);
+
+@sample
+fout = flts.Papass_do(tmp(spl0, spl1));
+outsig = sumchnls(2, fout);
+spl0 = (spl0 + outsig[0]) * gain;
+spl1 = (spl1 + outsig[1]) * gain;

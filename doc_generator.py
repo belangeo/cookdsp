@@ -1,11 +1,12 @@
 import os, markdown, zipfile, datetime
 
-VERSION = "0.1"
+VERSION = "0.2"
 LOCATION = r'/home/olivier/.wine/drive_c/users/olivier/Application Data/REAPER/Effects/belangeo'
 MAINFILE = 'cookdsp.jsfx-inc'
 FOLDEROUT = './cookdspdoc'
 EXAMPLES = 'cookdsp_examples'
 REPOFOLDER = os.getcwd()
+POBJECTSEXAMPLES = os.path.join(REPOFOLDER, "Pobjects_examples")
 EXAMPLEFOLDER = os.path.join(FOLDEROUT, EXAMPLES)
 RELEASE = "cookdsp_%s_%s" % (VERSION, str(datetime.date.today()))
 RELEASEFOLDER = os.path.join(FOLDEROUT, RELEASE)
@@ -27,6 +28,7 @@ os.mkdir(RELEASEFOLDER)
 os.mkdir(TUTORIALSFOLDER)
 os.mkdir(TUTORIALEXAMPLEFOLDER)
 
+os.system('cp %s/* %s' % (POBJECTSEXAMPLES, EXAMPLEFOLDER))
 os.system('cp "%s" %s' % (os.path.join(LOCATION, MAINFILE), FOLDEROUT))
 os.system('cp "%s" %s' % (os.path.join(LOCATION, MAINFILE), RELEASEFOLDER))
 os.system('cp "%s" %s' % (os.path.join(LOCATION, MAINFILE), REPOFOLDER))

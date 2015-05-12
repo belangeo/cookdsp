@@ -1,0 +1,24 @@
+// JSFX-CookDSP - Pobjects example
+// (c) Olivier Belanger - 2015 - belangeo@gmail.com
+
+desc:Stereo Lowpass Filter
+
+import cookdsp.jsfx-inc
+
+slider1:2500<100,10000>Cutoff Frequency (hz)
+slider2:0.05<0.001,1>Interpolation Time (sec)
+
+@init
+flts.Plop(set(2,2500));
+inter.lop(1/0.05);
+
+@slider
+inter.lop_set_freq(1/slider2);
+
+@sample
+fr = inter.lop_do(slider1);
+flts.Plop_set_freq(tmp(fr, fr));
+out = flts.Plop_do(tmp(spl0, spl1));
+spl0 = out[1];
+spl1 = out[2];
+

@@ -1,0 +1,66 @@
+// JSFX-CookDSP - Pobjects example
+// (c) Olivier Belanger - 2015 - belangeo@gmail.com
+
+desc:Polyphonic Midi Synthesizer
+
+import cookdsp.jsfx-inc
+
+slider1:1000<100,5000>Lowpass Filter Cutoff Frequency
+slider2:5<1,25>Lowpass Filter Q
+
+@init
+// Number of voices
+VOICES = 8;
+// Sets an array to hold output values
+outs = set(VOICES, 0);
+// Sets an array to hold amplitude values
+amps = set(VOICES, 0);
+// Sets an array to hold oscillator frequencies
+freqs = set(VOICES,0);
+// Initializes VOICES envelopes
+envs.Pmasr(set(VOICES, 0.01), set(VOICES, 1));
+// Initializes VOICES oscillators
+phs.Pphasor(freqs, set(VOICES,0));
+// Resonant lowpass filter
+lp.biquad(slider1, slider2, 0);
+// Initializes the MIDI polyphony manager
+p.poly(8, 1);
+
+@slider
+// Sets lowpass filter parameters
+lp.biquad_set_freq(slider1);
+lp.biquad_set_q(slider2);
+
+@block
+// Until all midi events have been processed
+while (n.notein()) (
+    // If midi event is a midi note
+    n.ok ? (
+        p.poly_do(n.pitch, n.velocity);
+        // If a voice has been assigned
+        p.voice != -1 ? (
+            // Sets the frequency for the voice
+            freqs[p.voice+1] = mtof(p.pitch);
+            phs.Pphasor_set_freq(freqs);
+            // Sets the amplitude for the voice
+            amps[p.voice+1] = p.velocity / 127;
+        );
+    );
+);
+
+@sample
+// Computes the envelopes
+gains = envs.Pmasr_do(amps);
+// Computes the oscillators
+waves = phs.Pphasor_do();
+// Applies envelopes to oscillators
+k = 1;
+while (k <= VOICES) (
+    outs[k] = gains[k] * waves[k]; 
+    k += 1; 
+);
+// Monophonic summation
+outsig = sumchnls(1, outs);
+// Lowpass filter and output
+spl0 = spl1 = lp.biquad_do(outsig[0]) * 0.2;
+

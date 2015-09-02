@@ -24,7 +24,7 @@ library and display the percentage slider:
 
     /* Scaling values from an input range to an output range. */
 
-    desc:Stereo Amplifier
+    desc:Scaling values
 
     import cookdsp.jsfx-inc
 
@@ -54,7 +54,7 @@ with the gain factors saved in the `ampL` and `ampR` variables:
 
     /* Scaling values from an input range to an output range. */
 
-    desc:Stereo Amplifier
+    desc:Scaling values
 
     import cookdsp.jsfx-inc
 

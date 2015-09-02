@@ -719,7 +719,7 @@ Example
 
     @sample
     // Use "tmp" function to pass a list of floats
-    // to the Pbp_do() function. All *_do() functions 
+    // to the Pbp_do() function. All P*_do() functions 
     // wraps around the tmp list length so it is 
     // safe to pass a list of different length than
     // the number of internal objects.
@@ -1206,7 +1206,7 @@ Description
 
 The `sunchnls` function wraps any number of values (packed
 in a CookDSP list, ie with the list length as first index)
-to `chnls` number of values. It computes a simmple sum. That
+to `chnls` number of values. It computes a simple sum. That
 is, a two-channels sum for a list (4, 0.25, 0.1, 0.4, 0.75)
 will return a two-values array (0.65, 0.85). The function 
 returns the first position of the reserved summation memory. 

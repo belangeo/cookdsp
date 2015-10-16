@@ -1176,3 +1176,341 @@ function biquad_do(signal)
     this.x2 = this.x1; this.x1 = signal; this.y2 = this.y1; this.y1 = tmp_;
     tmp_;
 );
+
+/******************************************************* 
+MOOG
+====
+
+24dB/oct resonant lowpass filter.
+
+Description
+-----------
+
+Implementation of the Moog ladder filter based on the work of Antti 
+Huovilainen, described in the paper "Non-Linear Digital Implementation 
+of the Moog Ladder Filter" (Proceedings of DaFX04, University of Napoli).
+Adapted from Csound code for the moogladder opcode (Victor Lazzarini).
+
+It must be used with a variable name as prefix (object oriented).
+
+Initializer
+-----------
+
+#### moog(freq, res) ####
+
+Initializes a fourth-order IIR resonant lowpass filter with cutoff
+frequency `freq`, in Hz, and amount of resonance `res`, between 0
+(no resonance) and 1 (self-oscillation). 
+
+Methods
+-------
+
+#### moog_set_freq(freq) ####
+
+Sets a new cutoff frequency `freq`, in Hz.
+
+#### moog_set_res(res) ####
+
+Sets a new resonance factor, between 0 and 1.
+
+#### moog_do(signal) ####
+
+Processes one samples of an input signal `signal` and outputs
+the filtered sample.
+
+Example
+-------
+
+    desc:24dB/oct Resonant Lowpass Filter
+
+    import cookdsp.jsfx-inc
+
+    slider1:3500<100,12000>Cutoff Frequency in Hz
+    slider2:0.5<0,1>Resonance
+
+    @init
+    // Initializes the filter
+    filt1.moog(slider1, slider2);
+    filt2.moog(slider1, slider2);
+
+    @slider
+    filt1.moog_set_freq(slider1);
+    filt2.moog_set_freq(slider1);
+    filt1.moog_set_res(slider2);
+    filt2.moog_set_res(slider2);
+
+    @sample
+    // Filters the input signal
+    spl0 = filt1.moog_do(spl0);
+    spl1 = filt2.moog_do(spl1);
+
+********************************************************/
+function _tanh(x)
+(
+    (exp(2*x) - 1) / (exp(2*x) + 1);
+);
+
+function _moog_compute_coeffs(freq res)
+(
+    freq < 1 ? freq = 1 : freq > this.ny ? freq = this.ny;
+    this.freq = freq; 
+    res < 0 ? res = 0 : res > 1 ? res = 1;
+    this.res = res;
+    // srate is half the actual filter sampling rate
+    fc_ = this.freq / srate;
+    f_  =  0.5 * fc_;
+    fc2_ = fc_ * fc_;
+    fc3_ = fc2_ * fc_;
+    // frequency & amplitude correction
+    fcr_ = 1.8730 * fc3_ + 0.4955 * fc2_ - 0.6490 * fc_ + 0.9988;
+    acr_ = -3.9364 * fc2_ + 1.8409 * fc_ + 0.9968;
+    this.scl = (1.0 - exp(-2 * $pi * f_ * fcr_)) / this.z; // filter tuning
+    this.r4 = 3.96 * this.res * acr_; // filter feedback
+);
+
+function moog(freq res)
+(
+    this.y1 = this.y2 = this.y3 = this.y4 = this.y5 = this.out = 0;
+    this.ny = srate * 0.49;
+    this.z = 1/40000; // twice the "thermal voltage of a transistor"
+    this._moog_compute_coeffs(freq, res);
+);
+
+function moog_set_freq(freq)
+(
+    this._moog_compute_coeffs(freq, this.res);
+);
+
+function moog_set_res(res)
+(
+    this._moog_compute_coeffs(this.freq, res);
+);
+
+function moog_do(signal)
+(
+    loop(2,
+	this.y1 = this.y1 + this.scl * (_tanh((signal - this.r4 * this.out) * this.z) - _tanh(this.y1*this.z));
+	this.y2 = this.y2 + this.scl * (_tanh(this.y1 * this.z) - _tanh(this.y2 * this.z));
+	this.y3 = this.y3 + this.scl * (_tanh(this.y2 * this.z) - _tanh(this.y3 * this.z));
+	this.y4 = this.y4 + this.scl * (_tanh(this.y3 * this.z) - _tanh(this.y4 * this.z));
+	this.out = (this.y4 + this.y5) * 0.5;
+	this.y5 = this.y4;
+    );
+    this.out;
+);
+
+
+/******************************************************* 
+COMB
+====
+
+Reverberates an input signal with a colored frequency response.
+
+Description
+-----------
+
+Comb creates a comb filter with peaks in the spectrum located at all
+multiples of `1 / delay time`. This kind of filter is often used in simple 
+digital reverb implementations.
+
+It must be used with a variable name as prefix (object oriented).
+
+Initializer
+-----------
+
+#### comb(delay, feed) ####
+
+Initializes acomb filter with frequency as the inverse of the delay
+time `delay`, in seconds, and feedback `feed`, between 0 and 1. 
+
+Methods
+-------
+
+#### comb_set_delay(delay) ####
+
+Sets a new delay time, in seconds.
+
+#### comb_set_feed(feed) ####
+
+Sets a new feedback factor, between 0 and 1.
+
+#### comb_do(signal) ####
+
+Processes one samples of an input signal `signal` and outputs
+the filtered sample.
+
+Example
+-------
+
+    desc:Schroeder Reverb 2
+
+    import cookdsp.jsfx-inc
+
+    slider1:3500<500,10000>Lowpass Cutoff
+    slider2:0.2<0,1>Balance Dry/Wet
+
+    @init
+    // Left ch. comb filters        Right ch. comb filters
+    c1L.comb(0.0297, 0.65);         c1R.comb(0.0277, 0.65);
+    c2L.comb(0.0371, 0.51);         c2R.comb(0.0393, 0.51);
+    c3L.comb(0.0411, 0.5);          c3R.comb(0.0409, 0.5);
+    c4L.comb(0.0137, 0.73);         c4R.comb(0.0155, 0.73);
+    // Left ch. allpass filters     Right ch. allpass filters
+    a1L.allpass(0.005, 0.75);       a1R.allpass(0.00507, 0.75);
+    a2L.allpass(0.0117, 0.61);      a2R.allpass(0.0123, 0.61);
+    // Left ch. lowpass filter      Right ch. lowpass filter
+    lpL.lop(3500);                  lpR.lop(3500);
+
+    @slider
+    lpL.lop_set_freq(slider1);
+    lpR.lop_set_freq(slider1);
+
+    @sample
+    // Left ch. comb filters        Right ch. comb filters
+    sig1L = c1L.comb_do(spl0);      sig1R = c1R.comb_do(spl1);
+    sig2L = c2L.comb_do(spl0);      sig2R = c2R.comb_do(spl1);
+    sig3L = c3L.comb_do(spl0);      sig3R = c3R.comb_do(spl1);
+    sig4L = c4L.comb_do(spl0);      sig4R = c4R.comb_do(spl1);
+    // Comb filters summation
+    sumL = spl0 + sig1L + sig2L + sig3L + sig4L;
+    sumR = spl1 + sig1R + sig2R + sig3R + sig4R;
+    // Left ch. allpass filters     Right ch. allpass filters
+    all1L = a1L.allpass_do(sumL);   all1R = a1R.allpass_do(sumR);
+    all2L = a2L.allpass_do(all1L);  all2R = a2R.allpass_do(all1R);
+    // Left ch. lowpass filter      Right ch. lowpass filter
+    sigL = lpL.lop_do(all2L) * .2;  sigR = lpR.lop_do(all2R) * .2;
+    // Balance and output
+    spl0 = spl0 + (sigL - spl0) * slider2;
+    spl1 = spl1 + (sigR - spl1) * slider2;
+
+********************************************************/
+function comb(delay feed)
+(
+    this.dline.delay(srate/2);
+    delay < 1/srate ? delay = 1/srate : delay > 0.5 ? delay = 0.5;
+    this.delay = delay;
+    feed < 0 ? feed = 0 : feed > 1 ? feed = 1;
+    this.feed = feed;
+);
+
+function comb_set_delay(delay)
+(
+    delay < 1/srate ? delay = 1/srate : delay > 0.5 ? delay = 0.5;
+    this.delay = delay;
+);
+
+function comb_set_feed(feed)
+(
+    feed < 0 ? feed = 0 : feed > 1 ? feed = 1;
+    this.feed = feed;
+);
+
+function comb_do(signal)
+(
+    tmp_ = this.dline.delay_fsread2(this.delay);
+    this.dline.delay_write(signal + tmp_ * this.feed);
+    tmp_;
+);
+
+/******************************************************* 
+ALLPASS
+=======
+
+Reverberates an input signal with a flat frequency response.
+
+Description
+-----------
+
+Allpass is based on the combination of feedforward and feedback comb filter. 
+This kind of filter is often used in simple digital reverb implementations.
+
+It must be used with a variable name as prefix (object oriented).
+
+Initializer
+-----------
+
+#### allpass(delay, feed) ####
+
+Initializes an allpass filter with frequency as the inverse of the delay
+time `delay`, in seconds, and feedback `feed`, between 0 and 1. 
+
+Methods
+-------
+
+#### allpass_set_delay(delay) ####
+
+Sets a new delay time, in seconds.
+
+#### allpass_set_feed(feed) ####
+
+Sets a new feedback factor, between 0 and 1.
+
+#### allpass_do(signal) ####
+
+Processes one samples of an input signal `signal` and outputs
+the filtered sample.
+
+Example
+-------
+
+    desc:Schroeder Reverb 1
+
+    import cookdsp.jsfx-inc
+
+    slider1:0.2<0,1>Balance Dry/Wet
+
+    @init
+    // Left ch. allpass filters     Right ch. allpass filters
+    a1L.allpass(0.0204, 0.35);      a1R.allpass(0.02011, 0.35);
+    a2L.allpass(0.06653, 0.41);     a2R.allpass(0.06641, 0.41);
+    a3L.allpass(0.035007, 0.5);     a3R.allpass(0.03504, 0.5);
+    a4L.allpass(0.023021, 0.65);    a4R.allpass(0.022987, 0.65);
+    // Left ch. lowpass filters     Right ch. lowpass filters
+    lp1L.lop(5000);                 lp1R.lop(5000);
+    lp2L.lop(3000);                 lp2R.lop(3000);
+    lp3L.lop(1500);                 lp3R.lop(1500);
+    lp4L.lop(500);                  lp4R.lop(500);
+        
+    @sample
+    // Left channel                 Right channel                 
+    sig1L = a1L.allpass_do(spl0);   sig1R = a1R.allpass_do(spl1);
+    sig2L = a2L.allpass_do(sig1L);  sig2R = a2R.allpass_do(sig1R);
+    sig3L = a3L.allpass_do(sig2L);  sig3R = a3R.allpass_do(sig2R);
+    sig4L = a4L.allpass_do(sig3L);  sig4R = a4R.allpass_do(sig3R);
+    lop1L = lp1L.lop_do(sig1L);     lop1R = lp1R.lop_do(sig1R);
+    lop2L = lp2L.lop_do(sig2L);     lop2R = lp2R.lop_do(sig2R);
+    lop3L = lp3L.lop_do(sig3L);     lop3R = lp3R.lop_do(sig3R);
+    lop4L = lp4L.lop_do(sig4L);     lop4R = lp4R.lop_do(sig4R);
+    sigL = (lop1L + lop2L + lop3L + lop4L) * 0.5;
+    sigR = (lop1R + lop2R + lop3R + lop4R) * 0.5;
+    spl0 = spl0 + (sigL - spl0) * slider1;
+    spl1 =  spl1 + (sigR - spl1) * slider1;
+
+********************************************************/
+function allpass(delay feed)
+(
+    this.dline.delay(srate/2);
+    delay < 1/srate ? delay = 1/srate : delay > 0.5 ? delay = 0.5;
+    this.delay = delay;
+    feed < 0 ? feed = 0 : feed > 1 ? feed = 1;
+    this.feed = feed;
+);
+
+function allpass_set_delay(delay)
+(
+    delay < 1/srate ? delay = 1/srate : delay > 0.5 ? delay = 0.5;
+    this.delay = delay;
+);
+
+function allpass_set_feed(feed)
+(
+    feed < 0 ? feed = 0 : feed > 1 ? feed = 1;
+    this.feed = feed;
+);
+
+function allpass_do(signal)
+(
+    tmp_ = this.dline.delay_fsread2(this.delay);
+    this.dline.delay_write(signal + tmp_ * this.feed);
+    tmp_ * (1 - this.feed * this.feed) + signal * -this.feed;
+);

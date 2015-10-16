@@ -325,7 +325,7 @@ tuttail = """
 <HR>
 <div style="font-size: 9pt;">(c) Olivier Belanger, 2015</div>
 """
-index.write('<h2 id="tutorials">Tutorials</h2>')
+index.write('<h2 id="tutorials">Tutorials (Under development...)</h2>')
 
 tutorials = sorted([f for f in os.listdir(TUTORIALS) if f.endswith(".md")])
 tutorialsNoExt = [os.path.splitext(tut)[0] for tut in tutorials]

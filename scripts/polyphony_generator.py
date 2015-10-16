@@ -6,7 +6,7 @@ MAINFILE = 'cookdsp.jsfx-inc'
 OUTPATH = os.path.join(LOCATION, "cookdsp", "pobjects.jsfx-inc")
 DOCFILE = 'Pobjects_doc.md'
 
-objnames = {"delay": [], "sdelay": [], 
+objnames = {"delay": [], "sdelay": [], "moog": [], "comb": [], "allpass": [],
             "lop": [], "hip": [], "bp": [], "butlp": [], "buthp": [],
             "butbp": [], "butbr": [], "apass": [], "biquad": [],
             "follow": [], "zcross": [], "yin": [], "onset": [],

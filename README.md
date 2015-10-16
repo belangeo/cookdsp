@@ -28,7 +28,7 @@ linux :
 
     ~/.wine/drive_c/users/<username>/Application Data/REAPER/Effects 
 
-Documentation and turorials
+Documentation and tutorials
 ---------------------------
 
 For a complete documentation, examples and tutorials, visit the CookDSP official web site:

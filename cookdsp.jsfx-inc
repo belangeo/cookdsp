@@ -7,6 +7,10 @@
 // "AS IS", WITHOUT WARRANTY OF ANY KIND FROM THE AUTHOR.      //
 /////////////////////////////////////////////////////////////////
 
+/* Missing math functions */
+
+import cookdsp/mmath.jsfx-inc
+
 /* Utility functions */
 
 import cookdsp/memalloc.jsfx-inc
@@ -64,5 +68,4 @@ import cookdsp/pobjects.jsfx-inc
 @init
 
 COOKDSP_VERSION = 0.2;
-
 

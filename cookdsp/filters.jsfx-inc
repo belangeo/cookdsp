@@ -1273,23 +1273,23 @@ function moog(freq res)
 
 function moog_set_freq(freq)
 (
-    this._moog_compute_coeffs(freq, this.res);
+    freq != this.freq ? this._moog_compute_coeffs(freq, this.res);
 );
 
 function moog_set_res(res)
 (
-    this._moog_compute_coeffs(this.freq, res);
+    res != this.res ? this._moog_compute_coeffs(this.freq, res);
 );
 
 function moog_do(signal)
 (
     loop(2,
-	this.y1 = this.y1 + this.scl * (tanh((signal - this.r4 * this.out) * this.z) - tanh(this.y1*this.z));
-	this.y2 = this.y2 + this.scl * (tanh(this.y1 * this.z) - tanh(this.y2 * this.z));
-	this.y3 = this.y3 + this.scl * (tanh(this.y2 * this.z) - tanh(this.y3 * this.z));
-	this.y4 = this.y4 + this.scl * (tanh(this.y3 * this.z) - tanh(this.y4 * this.z));
-	this.out = (this.y4 + this.y5) * 0.5;
-	this.y5 = this.y4;
+        this.y1 = this.y1 + this.scl * (tanh((signal - this.r4 * this.out) * this.z) - tanh(this.y1*this.z));
+        this.y2 = this.y2 + this.scl * (tanh(this.y1 * this.z) - tanh(this.y2 * this.z));
+        this.y3 = this.y3 + this.scl * (tanh(this.y2 * this.z) - tanh(this.y3 * this.z));
+        this.y4 = this.y4 + this.scl * (tanh(this.y3 * this.z) - tanh(this.y4 * this.z));
+        this.out = (this.y4 + this.y5) * 0.5;
+        this.y5 = this.y4;
     );
     this.out;
 );

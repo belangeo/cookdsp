@@ -14,10 +14,10 @@ internal objects output values.
 
 Available `Pobjects` are:
     
-`Pallpass`, `Papass`, `Pbiquad`, `Pbp`, `Pbutbp`, `Pbutbr`, `Pbuthp`, `Pbutlp`, 
-`Pcomb`, `Pcompress`, `Pdelay`, `Pdisto`, `Pexpand`, `Pfollow`, `Pgate`, `Pharmon`, 
-`Phip`, `Plop`, `Pmasr`, `Pmoog`, `Ponset`, `Pphasor`, `Prandom`, `Psdelay`, 
-`Psine`, `Pwgverb`, `Pyin`, `Pzcross`, 
+`Pallpass`, `Papass`, `Pbiquad`, `Pblosc`, `Pbp`, `Pbutbp`, `Pbutbr`, `Pbuthp`, 
+`Pbutlp`, `Pcomb`, `Pcompress`, `Pdelay`, `Pdisto`, `Pexpand`, `Pfollow`, `Pgate`, 
+`Pharmon`, `Phip`, `Plop`, `Pmasr`, `Pmoog`, `Ponset`, `Pphasor`, `Prandom`, 
+`Psdelay`, `Psine`, `Pwgverb`, `Pyin`, `Pzcross`, 
 
 They must be used with a variable name as prefix (object oriented).
 
@@ -78,6 +78,269 @@ Example
     spl1 += (rand(2) - 1) * 0.5 * amps[2];
 
 ********************************************************/
+function Pblosc(lst1 lst2 lst3)
+(
+    this.num = lst1[0];
+    this.outlist = memalloc(this.num + 1);
+    this.outlist[0] = this.num;
+    this.num > 0 ? this.0.blosc(lst1[1], lst2[1], lst3[1]);
+    this.num > 1 ? this.1.blosc(lst1[2], lst2[2], lst3[2]);
+    this.num > 2 ? this.2.blosc(lst1[3], lst2[3], lst3[3]);
+    this.num > 3 ? this.3.blosc(lst1[4], lst2[4], lst3[4]);
+    this.num > 4 ? this.4.blosc(lst1[5], lst2[5], lst3[5]);
+    this.num > 5 ? this.5.blosc(lst1[6], lst2[6], lst3[6]);
+    this.num > 6 ? this.6.blosc(lst1[7], lst2[7], lst3[7]);
+    this.num > 7 ? this.7.blosc(lst1[8], lst2[8], lst3[8]);
+    this.num > 8 ? this.8.blosc(lst1[9], lst2[9], lst3[9]);
+    this.num > 9 ? this.9.blosc(lst1[10], lst2[10], lst3[10]);
+    this.num > 10 ? this.10.blosc(lst1[11], lst2[11], lst3[11]);
+    this.num > 11 ? this.11.blosc(lst1[12], lst2[12], lst3[12]);
+    this.num > 12 ? this.12.blosc(lst1[13], lst2[13], lst3[13]);
+    this.num > 13 ? this.13.blosc(lst1[14], lst2[14], lst3[14]);
+    this.num > 14 ? this.14.blosc(lst1[15], lst2[15], lst3[15]);
+    this.num > 15 ? this.15.blosc(lst1[16], lst2[16], lst3[16]);
+    this.num > 16 ? this.16.blosc(lst1[17], lst2[17], lst3[17]);
+    this.num > 17 ? this.17.blosc(lst1[18], lst2[18], lst3[18]);
+    this.num > 18 ? this.18.blosc(lst1[19], lst2[19], lst3[19]);
+    this.num > 19 ? this.19.blosc(lst1[20], lst2[20], lst3[20]);
+    this.num > 20 ? this.20.blosc(lst1[21], lst2[21], lst3[21]);
+    this.num > 21 ? this.21.blosc(lst1[22], lst2[22], lst3[22]);
+    this.num > 22 ? this.22.blosc(lst1[23], lst2[23], lst3[23]);
+    this.num > 23 ? this.23.blosc(lst1[24], lst2[24], lst3[24]);
+    this.num > 24 ? this.24.blosc(lst1[25], lst2[25], lst3[25]);
+    this.num > 25 ? this.25.blosc(lst1[26], lst2[26], lst3[26]);
+    this.num > 26 ? this.26.blosc(lst1[27], lst2[27], lst3[27]);
+    this.num > 27 ? this.27.blosc(lst1[28], lst2[28], lst3[28]);
+    this.num > 28 ? this.28.blosc(lst1[29], lst2[29], lst3[29]);
+    this.num > 29 ? this.29.blosc(lst1[30], lst2[30], lst3[30]);
+    this.num > 30 ? this.30.blosc(lst1[31], lst2[31], lst3[31]);
+    this.num > 31 ? this.31.blosc(lst1[32], lst2[32], lst3[32]);
+    this.num > 32 ? this.32.blosc(lst1[33], lst2[33], lst3[33]);
+    this.num > 33 ? this.33.blosc(lst1[34], lst2[34], lst3[34]);
+    this.num > 34 ? this.34.blosc(lst1[35], lst2[35], lst3[35]);
+    this.num > 35 ? this.35.blosc(lst1[36], lst2[36], lst3[36]);
+    this.num > 36 ? this.36.blosc(lst1[37], lst2[37], lst3[37]);
+    this.num > 37 ? this.37.blosc(lst1[38], lst2[38], lst3[38]);
+    this.num > 38 ? this.38.blosc(lst1[39], lst2[39], lst3[39]);
+    this.num > 39 ? this.39.blosc(lst1[40], lst2[40], lst3[40]);
+);
+function Pblosc_set_freq(lst1)
+(
+    this.num > 0 ? this.0.blosc_set_freq(lst1[1]);
+    this.num > 1 ? this.1.blosc_set_freq(lst1[2]);
+    this.num > 2 ? this.2.blosc_set_freq(lst1[3]);
+    this.num > 3 ? this.3.blosc_set_freq(lst1[4]);
+    this.num > 4 ? this.4.blosc_set_freq(lst1[5]);
+    this.num > 5 ? this.5.blosc_set_freq(lst1[6]);
+    this.num > 6 ? this.6.blosc_set_freq(lst1[7]);
+    this.num > 7 ? this.7.blosc_set_freq(lst1[8]);
+    this.num > 8 ? this.8.blosc_set_freq(lst1[9]);
+    this.num > 9 ? this.9.blosc_set_freq(lst1[10]);
+    this.num > 10 ? this.10.blosc_set_freq(lst1[11]);
+    this.num > 11 ? this.11.blosc_set_freq(lst1[12]);
+    this.num > 12 ? this.12.blosc_set_freq(lst1[13]);
+    this.num > 13 ? this.13.blosc_set_freq(lst1[14]);
+    this.num > 14 ? this.14.blosc_set_freq(lst1[15]);
+    this.num > 15 ? this.15.blosc_set_freq(lst1[16]);
+    this.num > 16 ? this.16.blosc_set_freq(lst1[17]);
+    this.num > 17 ? this.17.blosc_set_freq(lst1[18]);
+    this.num > 18 ? this.18.blosc_set_freq(lst1[19]);
+    this.num > 19 ? this.19.blosc_set_freq(lst1[20]);
+    this.num > 20 ? this.20.blosc_set_freq(lst1[21]);
+    this.num > 21 ? this.21.blosc_set_freq(lst1[22]);
+    this.num > 22 ? this.22.blosc_set_freq(lst1[23]);
+    this.num > 23 ? this.23.blosc_set_freq(lst1[24]);
+    this.num > 24 ? this.24.blosc_set_freq(lst1[25]);
+    this.num > 25 ? this.25.blosc_set_freq(lst1[26]);
+    this.num > 26 ? this.26.blosc_set_freq(lst1[27]);
+    this.num > 27 ? this.27.blosc_set_freq(lst1[28]);
+    this.num > 28 ? this.28.blosc_set_freq(lst1[29]);
+    this.num > 29 ? this.29.blosc_set_freq(lst1[30]);
+    this.num > 30 ? this.30.blosc_set_freq(lst1[31]);
+    this.num > 31 ? this.31.blosc_set_freq(lst1[32]);
+    this.num > 32 ? this.32.blosc_set_freq(lst1[33]);
+    this.num > 33 ? this.33.blosc_set_freq(lst1[34]);
+    this.num > 34 ? this.34.blosc_set_freq(lst1[35]);
+    this.num > 35 ? this.35.blosc_set_freq(lst1[36]);
+    this.num > 36 ? this.36.blosc_set_freq(lst1[37]);
+    this.num > 37 ? this.37.blosc_set_freq(lst1[38]);
+    this.num > 38 ? this.38.blosc_set_freq(lst1[39]);
+    this.num > 39 ? this.39.blosc_set_freq(lst1[40]);
+);
+function Pblosc_set_sharp(lst1)
+(
+    this.num > 0 ? this.0.blosc_set_sharp(lst1[1]);
+    this.num > 1 ? this.1.blosc_set_sharp(lst1[2]);
+    this.num > 2 ? this.2.blosc_set_sharp(lst1[3]);
+    this.num > 3 ? this.3.blosc_set_sharp(lst1[4]);
+    this.num > 4 ? this.4.blosc_set_sharp(lst1[5]);
+    this.num > 5 ? this.5.blosc_set_sharp(lst1[6]);
+    this.num > 6 ? this.6.blosc_set_sharp(lst1[7]);
+    this.num > 7 ? this.7.blosc_set_sharp(lst1[8]);
+    this.num > 8 ? this.8.blosc_set_sharp(lst1[9]);
+    this.num > 9 ? this.9.blosc_set_sharp(lst1[10]);
+    this.num > 10 ? this.10.blosc_set_sharp(lst1[11]);
+    this.num > 11 ? this.11.blosc_set_sharp(lst1[12]);
+    this.num > 12 ? this.12.blosc_set_sharp(lst1[13]);
+    this.num > 13 ? this.13.blosc_set_sharp(lst1[14]);
+    this.num > 14 ? this.14.blosc_set_sharp(lst1[15]);
+    this.num > 15 ? this.15.blosc_set_sharp(lst1[16]);
+    this.num > 16 ? this.16.blosc_set_sharp(lst1[17]);
+    this.num > 17 ? this.17.blosc_set_sharp(lst1[18]);
+    this.num > 18 ? this.18.blosc_set_sharp(lst1[19]);
+    this.num > 19 ? this.19.blosc_set_sharp(lst1[20]);
+    this.num > 20 ? this.20.blosc_set_sharp(lst1[21]);
+    this.num > 21 ? this.21.blosc_set_sharp(lst1[22]);
+    this.num > 22 ? this.22.blosc_set_sharp(lst1[23]);
+    this.num > 23 ? this.23.blosc_set_sharp(lst1[24]);
+    this.num > 24 ? this.24.blosc_set_sharp(lst1[25]);
+    this.num > 25 ? this.25.blosc_set_sharp(lst1[26]);
+    this.num > 26 ? this.26.blosc_set_sharp(lst1[27]);
+    this.num > 27 ? this.27.blosc_set_sharp(lst1[28]);
+    this.num > 28 ? this.28.blosc_set_sharp(lst1[29]);
+    this.num > 29 ? this.29.blosc_set_sharp(lst1[30]);
+    this.num > 30 ? this.30.blosc_set_sharp(lst1[31]);
+    this.num > 31 ? this.31.blosc_set_sharp(lst1[32]);
+    this.num > 32 ? this.32.blosc_set_sharp(lst1[33]);
+    this.num > 33 ? this.33.blosc_set_sharp(lst1[34]);
+    this.num > 34 ? this.34.blosc_set_sharp(lst1[35]);
+    this.num > 35 ? this.35.blosc_set_sharp(lst1[36]);
+    this.num > 36 ? this.36.blosc_set_sharp(lst1[37]);
+    this.num > 37 ? this.37.blosc_set_sharp(lst1[38]);
+    this.num > 38 ? this.38.blosc_set_sharp(lst1[39]);
+    this.num > 39 ? this.39.blosc_set_sharp(lst1[40]);
+);
+function Pblosc_set_type(lst1)
+(
+    this.num > 0 ? this.0.blosc_set_type(lst1[1]);
+    this.num > 1 ? this.1.blosc_set_type(lst1[2]);
+    this.num > 2 ? this.2.blosc_set_type(lst1[3]);
+    this.num > 3 ? this.3.blosc_set_type(lst1[4]);
+    this.num > 4 ? this.4.blosc_set_type(lst1[5]);
+    this.num > 5 ? this.5.blosc_set_type(lst1[6]);
+    this.num > 6 ? this.6.blosc_set_type(lst1[7]);
+    this.num > 7 ? this.7.blosc_set_type(lst1[8]);
+    this.num > 8 ? this.8.blosc_set_type(lst1[9]);
+    this.num > 9 ? this.9.blosc_set_type(lst1[10]);
+    this.num > 10 ? this.10.blosc_set_type(lst1[11]);
+    this.num > 11 ? this.11.blosc_set_type(lst1[12]);
+    this.num > 12 ? this.12.blosc_set_type(lst1[13]);
+    this.num > 13 ? this.13.blosc_set_type(lst1[14]);
+    this.num > 14 ? this.14.blosc_set_type(lst1[15]);
+    this.num > 15 ? this.15.blosc_set_type(lst1[16]);
+    this.num > 16 ? this.16.blosc_set_type(lst1[17]);
+    this.num > 17 ? this.17.blosc_set_type(lst1[18]);
+    this.num > 18 ? this.18.blosc_set_type(lst1[19]);
+    this.num > 19 ? this.19.blosc_set_type(lst1[20]);
+    this.num > 20 ? this.20.blosc_set_type(lst1[21]);
+    this.num > 21 ? this.21.blosc_set_type(lst1[22]);
+    this.num > 22 ? this.22.blosc_set_type(lst1[23]);
+    this.num > 23 ? this.23.blosc_set_type(lst1[24]);
+    this.num > 24 ? this.24.blosc_set_type(lst1[25]);
+    this.num > 25 ? this.25.blosc_set_type(lst1[26]);
+    this.num > 26 ? this.26.blosc_set_type(lst1[27]);
+    this.num > 27 ? this.27.blosc_set_type(lst1[28]);
+    this.num > 28 ? this.28.blosc_set_type(lst1[29]);
+    this.num > 29 ? this.29.blosc_set_type(lst1[30]);
+    this.num > 30 ? this.30.blosc_set_type(lst1[31]);
+    this.num > 31 ? this.31.blosc_set_type(lst1[32]);
+    this.num > 32 ? this.32.blosc_set_type(lst1[33]);
+    this.num > 33 ? this.33.blosc_set_type(lst1[34]);
+    this.num > 34 ? this.34.blosc_set_type(lst1[35]);
+    this.num > 35 ? this.35.blosc_set_type(lst1[36]);
+    this.num > 36 ? this.36.blosc_set_type(lst1[37]);
+    this.num > 37 ? this.37.blosc_set_type(lst1[38]);
+    this.num > 38 ? this.38.blosc_set_type(lst1[39]);
+    this.num > 39 ? this.39.blosc_set_type(lst1[40]);
+);
+function Pblosc_reset()
+(
+    this.num > 0 ? this.0.blosc_reset();
+    this.num > 1 ? this.1.blosc_reset();
+    this.num > 2 ? this.2.blosc_reset();
+    this.num > 3 ? this.3.blosc_reset();
+    this.num > 4 ? this.4.blosc_reset();
+    this.num > 5 ? this.5.blosc_reset();
+    this.num > 6 ? this.6.blosc_reset();
+    this.num > 7 ? this.7.blosc_reset();
+    this.num > 8 ? this.8.blosc_reset();
+    this.num > 9 ? this.9.blosc_reset();
+    this.num > 10 ? this.10.blosc_reset();
+    this.num > 11 ? this.11.blosc_reset();
+    this.num > 12 ? this.12.blosc_reset();
+    this.num > 13 ? this.13.blosc_reset();
+    this.num > 14 ? this.14.blosc_reset();
+    this.num > 15 ? this.15.blosc_reset();
+    this.num > 16 ? this.16.blosc_reset();
+    this.num > 17 ? this.17.blosc_reset();
+    this.num > 18 ? this.18.blosc_reset();
+    this.num > 19 ? this.19.blosc_reset();
+    this.num > 20 ? this.20.blosc_reset();
+    this.num > 21 ? this.21.blosc_reset();
+    this.num > 22 ? this.22.blosc_reset();
+    this.num > 23 ? this.23.blosc_reset();
+    this.num > 24 ? this.24.blosc_reset();
+    this.num > 25 ? this.25.blosc_reset();
+    this.num > 26 ? this.26.blosc_reset();
+    this.num > 27 ? this.27.blosc_reset();
+    this.num > 28 ? this.28.blosc_reset();
+    this.num > 29 ? this.29.blosc_reset();
+    this.num > 30 ? this.30.blosc_reset();
+    this.num > 31 ? this.31.blosc_reset();
+    this.num > 32 ? this.32.blosc_reset();
+    this.num > 33 ? this.33.blosc_reset();
+    this.num > 34 ? this.34.blosc_reset();
+    this.num > 35 ? this.35.blosc_reset();
+    this.num > 36 ? this.36.blosc_reset();
+    this.num > 37 ? this.37.blosc_reset();
+    this.num > 38 ? this.38.blosc_reset();
+    this.num > 39 ? this.39.blosc_reset();
+);
+function Pblosc_do()
+(
+    this.num > 0 ? this.outlist[1] = this.0.blosc_do();
+    this.num > 1 ? this.outlist[2] = this.1.blosc_do();
+    this.num > 2 ? this.outlist[3] = this.2.blosc_do();
+    this.num > 3 ? this.outlist[4] = this.3.blosc_do();
+    this.num > 4 ? this.outlist[5] = this.4.blosc_do();
+    this.num > 5 ? this.outlist[6] = this.5.blosc_do();
+    this.num > 6 ? this.outlist[7] = this.6.blosc_do();
+    this.num > 7 ? this.outlist[8] = this.7.blosc_do();
+    this.num > 8 ? this.outlist[9] = this.8.blosc_do();
+    this.num > 9 ? this.outlist[10] = this.9.blosc_do();
+    this.num > 10 ? this.outlist[11] = this.10.blosc_do();
+    this.num > 11 ? this.outlist[12] = this.11.blosc_do();
+    this.num > 12 ? this.outlist[13] = this.12.blosc_do();
+    this.num > 13 ? this.outlist[14] = this.13.blosc_do();
+    this.num > 14 ? this.outlist[15] = this.14.blosc_do();
+    this.num > 15 ? this.outlist[16] = this.15.blosc_do();
+    this.num > 16 ? this.outlist[17] = this.16.blosc_do();
+    this.num > 17 ? this.outlist[18] = this.17.blosc_do();
+    this.num > 18 ? this.outlist[19] = this.18.blosc_do();
+    this.num > 19 ? this.outlist[20] = this.19.blosc_do();
+    this.num > 20 ? this.outlist[21] = this.20.blosc_do();
+    this.num > 21 ? this.outlist[22] = this.21.blosc_do();
+    this.num > 22 ? this.outlist[23] = this.22.blosc_do();
+    this.num > 23 ? this.outlist[24] = this.23.blosc_do();
+    this.num > 24 ? this.outlist[25] = this.24.blosc_do();
+    this.num > 25 ? this.outlist[26] = this.25.blosc_do();
+    this.num > 26 ? this.outlist[27] = this.26.blosc_do();
+    this.num > 27 ? this.outlist[28] = this.27.blosc_do();
+    this.num > 28 ? this.outlist[29] = this.28.blosc_do();
+    this.num > 29 ? this.outlist[30] = this.29.blosc_do();
+    this.num > 30 ? this.outlist[31] = this.30.blosc_do();
+    this.num > 31 ? this.outlist[32] = this.31.blosc_do();
+    this.num > 32 ? this.outlist[33] = this.32.blosc_do();
+    this.num > 33 ? this.outlist[34] = this.33.blosc_do();
+    this.num > 34 ? this.outlist[35] = this.34.blosc_do();
+    this.num > 35 ? this.outlist[36] = this.35.blosc_do();
+    this.num > 36 ? this.outlist[37] = this.36.blosc_do();
+    this.num > 37 ? this.outlist[38] = this.37.blosc_do();
+    this.num > 38 ? this.outlist[39] = this.38.blosc_do();
+    this.num > 39 ? this.outlist[40] = this.39.blosc_do();
+    this.outlist;
+);
+
 function Papass(lst1 lst2 lst3)
 (
     this.num = lst1[0];

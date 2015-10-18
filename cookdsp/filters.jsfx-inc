@@ -1509,3 +1509,184 @@ function allpass_do(signal)
     this.dline.delay_write(signal + tmp_ * this.feed);
     tmp_ * (1 - this.feed * this.feed) + signal * -this.feed;
 );
+
+/******************************************************* 
+EQ
+===
+
+Equalizer filter.
+
+Description
+-----------
+
+EQ is a biquadratic digital filter designed for equalization. 
+It provides peak/notch and lowshelf/highshelf filters for building 
+parametric equalizers.
+
+It must be used with a variable name as prefix (object oriented).
+
+Initializer
+-----------
+
+#### eq(freq, q, boost, type) ####
+
+Initializes a second-order IIR equalizer filter. It takes as arguments the 
+center (or cutoff) frequency `freq`, in Hz, the quality factor `q` 
+(defined as `freq` / `bandwidth`), the amount of boost/cut, expressed in 
+dB, and the filter's type `type`. Possible types are:
+
+    - 0 : peak/notch
+    - 1 : lowshelf
+    - 2 : highshelf
+
+Methods
+-------
+
+#### eq_set_freq(freq) ####
+
+Sets a new center or cutoff frequency `freq`, in Hz.
+
+#### eq_set_q(q) ####
+
+Sets a new quality factor `q` (defined as `freq` / `bandwidth`).
+
+#### eq_set_boost(boost) ####
+
+Sets a new boost/cut gain factor, expressed in dB (0 dB is nominal gain).
+
+#### eq_set_type(type) ####
+
+Sets a new filter's type. Possible types are:
+
+    - 0 : peak/notch
+    - 1 : lowshelf
+    - 2 : highshelf
+
+#### eq_do(signal) ####
+
+Processes one samples of an input signal `signal` and outputs
+the filtered sample.
+
+Example
+-------
+
+    desc:Parametric EQ Filter
+
+    import cookdsp.jsfx-inc
+
+    slider1:1000<100,10000>Center Frequency
+    slider2:1<0.5,20>Filter Q
+    slider3:0<-18,18>Boost/Cut (dB)
+    slider4:0<0,2,1{Peak/Notch,Lowshelf,Highshelf}>Filter type
+
+    @init
+    f1.eq(slider1, slider2, slider3, slider4);
+    f2.eq(slider1, slider2, slider3, slider4);
+
+    @slider
+    f1.eq_set_freq(slider1); f2.eq_set_freq(slider1);
+    f1.eq_set_q(slider2); f2.eq_set_q(slider2);
+    f1.eq_set_boost(slider3); f2.eq_set_boost(slider3);
+    f1.eq_set_type(slider4); f2.eq_set_type(slider4);
+
+    @sample
+    spl0 = f1.eq_do(spl0);
+    spl1 = f2.eq_do(spl1);
+
+********************************************************/
+function _eq_compute_peak_coeffs(freq)
+(
+    amul_ = this.alpha * this.a;
+    adiv_ = this.alpha / this.a;
+    this.b0 = 1.0 + amul_;
+    this.b1 = this.a1 = -2.0 * this.c;
+    this.b2 = 1.0 - amul_;
+    this.a0 = 1 + adiv_;
+    this.a2 = 1 - adiv_;
+);
+
+function _eq_compute_ls_coeffs(freq)
+(
+    sqrt2a_ = sqrt(this.a * 2.0) * this.alpha;
+    amin1c_ = (this.a - 1.0) * this.c;
+    aadd1c_ = (this.a + 1.0) * this.c;
+
+    this.b0 = this.a * ((this.a + 1.0) - amin1c_ + sqrt2a_);
+    this.b1 = 2.0 * this.a * ((this.a - 1.0) - aadd1c_);
+    this.b2 = this.a * ((this.a + 1.0) - amin1c_ - sqrt2a_);
+    this.a0 = (this.a + 1.0) + amin1c_ + sqrt2a_;
+    this.a1 = -2.0 * ((this.a - 1.0) + aadd1c_);
+    this.a2 = (this.a + 1.0) + amin1c_ - sqrt2a_;
+);
+
+function _eq_compute_hs_coeffs(freq)
+(
+    sqrt2a_ = sqrt(this.a * 2.0) * this.alpha;
+    amin1c_ = (this.a - 1.0) * this.c;
+    aadd1c_ = (this.a + 1.0) * this.c;
+
+    this.b0 = this.a * ((this.a + 1.0) + amin1c_ + sqrt2a_);
+    this.b1 = -2.0 * this.a * ((this.a - 1.0) + aadd1c_);
+    this.b2 = this.a * ((this.a + 1.0) + amin1c_ - sqrt2a_);
+    this.a0 = (this.a + 1.0) - amin1c_ + sqrt2a_;
+    this.a1 = 2.0 * ((this.a - 1.0) - aadd1c_);
+    this.a2 = (this.a + 1.0) - amin1c_ - sqrt2a_;
+);
+
+function _eq_compute_vars(freq q boost)
+(
+    freq <= 1 ? freq = 1 : freq > this.ny ? freq = this.ny;
+    this.freq = freq;
+    q < 0.1 ? q = 0.1;
+    this.q = q;
+    this.boost = boost;
+
+    this.a = pow(10, boost/40);
+    w0 = this.twopi * this.freq / srate;
+    this.c = cos(w0);
+    this.alpha = sin(w0) / (2 * this.q);
+    this.type == 0 ? this._eq_compute_peak_coeffs() :
+    this.type == 1 ? this._eq_compute_ls_coeffs() :
+    this.type == 2 ? this._eq_compute_hs_coeffs();
+);
+
+function eq(freq q boost type)
+(
+    this.x1 = this.x2 = this.y1 = this.y2 = 0.0;
+    this.twopi = $pi * 2;
+    this.ny = srate * 0.49;
+    type < 0 ? type = 0 : type > 2 ? type = 2;
+    this.type = type;
+    this._eq_compute_vars(freq, q, boost);
+);
+
+function eq_set_freq(freq)
+(
+    freq != this.freq ? this._eq_compute_vars(freq, this.q, this.boost);
+);
+
+function eq_set_q(q)
+(
+    q != this.q ? this._eq_compute_vars(this.freq, q, this.boost);
+);
+
+function eq_set_boost(boost)
+(
+    boost != this.boost ? this._eq_compute_vars(this.freq, this.q, boost);
+);
+
+function eq_set_type(type)
+(
+    type != this.type ? (
+        type < 0 ? type = 0 : type > 2 ? type = 2;
+        this.type = type;
+        this._eq_compute_vars(this.freq, this.q, this.boost);
+    );
+);
+
+function eq_do(signal)
+(
+    tmp_ = (this.b0 * signal + this.b1 * this.x1 + this.b2 * this.x2 - this.a1 * this.y1 - this.a2 * this.y2) / this.a0;
+    this.x2 = this.x1; this.x1 = signal; this.y2 = this.y1; this.y1 = tmp_;
+    tmp_;
+);

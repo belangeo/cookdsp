@@ -11,7 +11,7 @@ objnames = {"delay": [], "sdelay": [], "moog": [], "comb": [], "allpass": [],
             "butbp": [], "butbr": [], "apass": [], "biquad": [],
             "follow": [], "zcross": [], "yin": [], "onset": [],
             "phasor": [], "sine": [], "random": [], "masr": [],
-            "compress": [], "gate": [], "expand": [],
+            "compress": [], "gate": [], "expand": [], "eq": [],
             "disto": [], "harmon": [], "wgverb": [], "blosc": []  
             }
 

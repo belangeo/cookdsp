@@ -11,7 +11,7 @@ objnames = {"delay": [], "sdelay": [], "moog": [], "comb": [], "allpass": [],
             "butbp": [], "butbr": [], "apass": [], "biquad": [],
             "follow": [], "zcross": [], "yin": [], "onset": [],
             "phasor": [], "sine": [], "random": [], "masr": [],
-            "compress": [], "gate": [], "expand": [], "eq": [],
+            "compress": [], "gate": [], "expand": [], "eq": [], "grains": [],
             "disto": [], "harmon": [], "wgverb": [], "blosc": []  
             }
 
@@ -56,7 +56,7 @@ with open(DOCFILE, "r") as f:
     text = f.read()
 docstr = text % objstr
 
-# Open export file (Pobjects.jsfx-inc)
+# Open export file (pobjects.jsfx-inc)
 f = open(OUTPATH, "w")
 init = "@init\n\n"
 f.write(init)
@@ -65,7 +65,10 @@ f.write(docstr)
 # Create functions for listed polyphonic-objects
 for obj in objnames:
     objname = obj
-    objinit = objnames[obj].pop(0)
+    for i, str in enumerate(objnames[obj]):
+        if str[0] == objname:
+            break
+    objinit = objnames[obj].pop(i)
     initargs = objinit[1]
     argnames = objnames[obj]
 

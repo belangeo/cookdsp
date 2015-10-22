@@ -1080,7 +1080,7 @@ Example
     spl1 = filt2.biquad_do(spl1);
 
 ********************************************************/
-function _biquad_compute_lp_coeffs(freq)
+function _biquad_compute_lp_coeffs()
 (
     this.b0 = this.b2 = (1 - this.c) / 2;
     this.b1 = 1 - this.c;
@@ -1089,7 +1089,7 @@ function _biquad_compute_lp_coeffs(freq)
     this.a2 = 1 - this.alpha;
 );
 
-function _biquad_compute_hp_coeffs(freq)
+function _biquad_compute_hp_coeffs()
 (
     this.b0 = (1 + this.c) / 2;
     this.b1 = -(1 + this.c);
@@ -1099,7 +1099,7 @@ function _biquad_compute_hp_coeffs(freq)
     this.a2 = 1 - this.alpha;
 );
 
-function _biquad_compute_bp_coeffs(freq)
+function _biquad_compute_bp_coeffs()
 (
     this.b0 = this.alpha;
     this.b1 = 0;
@@ -1109,7 +1109,7 @@ function _biquad_compute_bp_coeffs(freq)
     this.a2 = 1 - this.alpha;
 );
 
-function _biquad_compute_bs_coeffs(freq)
+function _biquad_compute_bs_coeffs()
 (
     this.b0 = 1;
     this.b1 = this.a1 = -2 * this.c;
@@ -1118,7 +1118,7 @@ function _biquad_compute_bs_coeffs(freq)
     this.a2 = 1 - this.alpha;
 );
 
-function _biquad_compute_ap_coeffs(freq)
+function _biquad_compute_ap_coeffs()
 (
     this.b0 = this.a2 = 1 - this.alpha;
     this.b1 = this.a1 = -2 * this.c;
@@ -1594,7 +1594,7 @@ Example
     spl1 = f2.eq_do(spl1);
 
 ********************************************************/
-function _eq_compute_peak_coeffs(freq)
+function _eq_compute_peak_coeffs()
 (
     amul_ = this.alpha * this.a;
     adiv_ = this.alpha / this.a;
@@ -1605,12 +1605,11 @@ function _eq_compute_peak_coeffs(freq)
     this.a2 = 1 - adiv_;
 );
 
-function _eq_compute_ls_coeffs(freq)
+function _eq_compute_ls_coeffs()
 (
     sqrt2a_ = sqrt(this.a * 2.0) * this.alpha;
     amin1c_ = (this.a - 1.0) * this.c;
     aadd1c_ = (this.a + 1.0) * this.c;
-
     this.b0 = this.a * ((this.a + 1.0) - amin1c_ + sqrt2a_);
     this.b1 = 2.0 * this.a * ((this.a - 1.0) - aadd1c_);
     this.b2 = this.a * ((this.a + 1.0) - amin1c_ - sqrt2a_);
@@ -1619,12 +1618,11 @@ function _eq_compute_ls_coeffs(freq)
     this.a2 = (this.a + 1.0) + amin1c_ - sqrt2a_;
 );
 
-function _eq_compute_hs_coeffs(freq)
+function _eq_compute_hs_coeffs()
 (
     sqrt2a_ = sqrt(this.a * 2.0) * this.alpha;
     amin1c_ = (this.a - 1.0) * this.c;
     aadd1c_ = (this.a + 1.0) * this.c;
-
     this.b0 = this.a * ((this.a + 1.0) + amin1c_ + sqrt2a_);
     this.b1 = -2.0 * this.a * ((this.a - 1.0) + aadd1c_);
     this.b2 = this.a * ((this.a + 1.0) + amin1c_ - sqrt2a_);

@@ -114,11 +114,11 @@ function phasor_reset()
 
 function phasor_do()
 (
-    val = this.current + this.phase;
-    val >= 1 ? val -= 1 : val < 0 ? val += 1;
+    val_ = this.current + this.phase;
+    val_ >= 1 ? val_ -= 1 : val_ < 0 ? val_ += 1;
     this.current += this.inc;
     this.current >= 1 ? this.current -= 1 : this.current < 0 ? this.current += 1;
-    val;
+    val_;
 );
 
 /******************************************************* 

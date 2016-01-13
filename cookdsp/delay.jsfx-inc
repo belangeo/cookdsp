@@ -46,7 +46,6 @@ Returns the value at the delayed position given in argument `delay`
 (in samples). This function uses no interpolation, ie. the position 
 is truncated to the biggest integer not greater than the real delayed 
 position.
-
 This function checks for delay's validity.
 
 #### delay_fread(delay) ####
@@ -81,7 +80,6 @@ for delay's validity. Use it only if `delay` is known to be valid.
 Returns the value at the delayed position given in argument `delay`
 (in samples). This function uses a cubic interpolation to read the 
 "true" value for a floating-point sample position.  
-
 This function checks for delay's validity.
 
 #### delay_fread3(delay) ####
@@ -204,7 +202,6 @@ function delay_read(delay)
     );
     this.curval;
 );
-
 function delay_fread(delay)
 (
     pos_ = this.curpos - delay;
@@ -233,7 +230,6 @@ function delay_read2(delay)
     );
     this.curval;
 );
-
 function delay_fread2(delay)
 (
     pos_ = this.curpos - delay;

@@ -178,7 +178,6 @@ function ftom(freq)
 (
     12.0 * log2(freq / 440.0) + 69;
 );
-
 /******************************************************* 
 TTOS
 ====
@@ -254,7 +253,6 @@ Example
 -------
 
     desc:Decibel Amplitude
-
     import cookdsp.jsfx-inc
 
     slider1:0<-60,12,0.01>Amplitude (dB)
@@ -309,7 +307,6 @@ Example
 -------
 
     desc:Rough Gate
-
     import cookdsp.jsfx-inc
 
     slider1:-20<-90,0,0.01>Threshold (dB) 
@@ -373,7 +370,6 @@ Example
 -------
 
     desc:Out-Of-Phase Envelopes
-
     import cookdsp.jsfx-inc
 
     slider1:4<0.1,10,0.01>Modulation Frequency

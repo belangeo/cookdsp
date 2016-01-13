@@ -32,7 +32,6 @@ Initializer
 
 Initializes the oscillator with the given frequency `freq`, in Hz,
 and initial phase `phase`, between 0 and 1.
-
 Methods
 -------
 

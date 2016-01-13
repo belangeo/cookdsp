@@ -6,7 +6,6 @@
 // permission notice appear in all copies. CookDSP IS PROVIDED //
 // "AS IS", WITHOUT WARRANTY OF ANY KIND FROM THE AUTHOR.      //
 /////////////////////////////////////////////////////////////////
-
 /* Missing math functions */
 
 import cookdsp/mmath.jsfx-inc

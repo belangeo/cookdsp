@@ -318,7 +318,6 @@ Apply a Fast Fourier Transform analysis on an input signal.
 
 Description
 -----------
-
 The `fftin` object transforms an audio signal into its spectral
 representation. The real and imaginary part from the analysis 
 are stored in the `real` and `imag` internal arrays.
@@ -327,7 +326,6 @@ Initializer
 -----------
 
 #### fftin(size, olaps, [window]) ####
-
 Initializes a Fast Fourier Transform algorithm. The FFT size, in
 samples, given by the `size` argument, must be a power of two.
 The `olaps` argument specifies the number of overlapping analysis.
@@ -340,19 +338,15 @@ Methods
 -------
 
 #### fftin_resize(size, olaps) ####
-
 Resizes internal memories of the FFT agorithm with the new `size` 
 and `olaps` factors. The corresponding `fftout` object (and every 
 processes in between) should always use the same size and number 
 of overlaps.
-
 #### fftin_set_window(window) ####
-
 Sets a new analysis window. See `buffer` object for the available 
 windows.
 
 #### fftin_do(signal) ####
-
 Processes one sample of the input `signal` and updates the `count`
 and `ready` attributes of the object. The `count` attribute should
 be used to retrieve the current resynthesized sample from a `fftout` 
@@ -468,7 +462,6 @@ function fftin(size olaps window)
 (
     this._fftin_init(size, olaps, window);
 );
-
 function fftin(size olaps)
 (
     this._fftin_init(size, olaps, 1);
@@ -524,7 +517,6 @@ Apply an Inverse Fast Fourier Transform on an analysis signal.
 
 Description
 -----------
-
 The `fftout` object converts the spectral representation of a signal 
 into its temporal form (real signal). It takes a real and imaginary
 parts, coming from an FFT process, to compute the inverse FFT and 
@@ -534,7 +526,6 @@ Initializer
 -----------
 
 #### fftout(size, olaps, [window]) ####
-
 Initializes an Inverse Fast Fourier Transform algorithm. The FFT size, 
 in samples, given by the `size` argument, must be a power of two.
 The `olaps` argument specifies the number of overlapping analysis.
@@ -547,7 +538,6 @@ Methods
 -------
 
 #### fftout_resize(size, olaps) ####
-
 Resizes internal memories of the FFT agorithm with the new `size` 
 and `olaps` factors. The corresponding `fftin` object (and every 
 processes in between) should always use the same size and number 
@@ -559,14 +549,12 @@ Sets a new analysis window. See `buffer` object for the available
 windows.
 
 #### fftout_get_output(count) ####
-
 Use this function to retrieve the output sample, from the
 Inverse Fast Fourier Transform, at the position `count`. If
 the position comes from the `count` attribute of a `fftin` 
 object, the current output sample will be retrieved.
 
 #### fftout_do(real, imag) ####
-
 Computes an Inverse Fast Fourier Transform with the arrays
 `real` and `imag`. This function should be called only when
 the `fftin` attribute `ready` is 1.
@@ -645,7 +633,6 @@ function fftout(size olaps window)
 (
     this._fftout_init(size, olaps, window);
 );
-
 function fftout(size olaps)
 (
     this._fftout_init(size, olaps, 1);
@@ -705,7 +692,6 @@ Apply a brickwall filter on a FFT analysis signal.
 
 Description
 -----------
-
 The `fftbrick` object takes a complex signal in input (real
 and imaginary parts of a FFT spectral analysis)  and applies
 either a lowpass or a highpass brickwall filter on it.
@@ -714,7 +700,6 @@ Initializer
 -----------
 
 #### fftbrick(freq, type, size) ####
-
 Initializes either a lowpass or a highpass filter, accroding 
 to the `type` argument (0 means a lowpass, 1 means a highpass), 
 with `freq` argument as the cutoff frequency, in Hz. The `size` 
@@ -725,23 +710,19 @@ Methods
 -------
 
 #### fftbrick_resize(size) ####
-
 Resizes internal memories of the process with the new `size`. 
 The size of a FFT process must be half the size of the FFT 
 used to analyse to input signal. This is the size of the real 
 and imaginary buffers.
 
 #### fftbrick_set_freq(freq) ####
-
 Sets a new cutoff frequency `freq`, in Hz.
 
 #### fftbrick_set_type(type) ####
-
 Sets a new filter type. 0 means a lowpass filter and 1 means a
 highpass filter.
 
 #### fftbrick_do(real, imag) ####
-
 Computes one frame of the process on a complex signal (`real` and 
 `imag` are the real and imaginary parts coming from a `fftin` or 
 any FFT processing object). The internal `real` and `imag` buffers 
@@ -890,7 +871,6 @@ Apply a bandpass filter on a FFT analysis signal.
 
 Description
 -----------
-
 The `fftband` object takes a complex signal in input (real
 and imaginary parts of a FFT spectral analysis)  and applies
 either a bandpass or a bandstop brickwall filter on it.
@@ -899,7 +879,6 @@ Initializer
 -----------
 
 #### fftband(freq, bw, type, size) ####
-
 Initializes either a bandpass or a bandstop filter, accroding 
 to the `type` argument (0 means a bandpass, 1 means a bandstop), 
 with `freq` argument as the center frequency and `bw` argument 
@@ -911,27 +890,22 @@ Methods
 -------
 
 #### fftband_resize(size) ####
-
 Resizes internal memories of the process with the new `size`. 
 The size of a FFT process must be half the size of the FFT 
 used to analyse to input signal. This is the size of the real 
 and imaginary buffers.
 
 #### fftband_set_freq(freq) ####
-
 Sets a new center frequency `freq`, in Hz.
 
 #### fftband_set_bw(bw) ####
-
 Sets a new filter's bandwidth `bw`, in Hz.
 
 #### fftband_set_type(type) ####
-
 Sets a new filter type. 0 means a bandpass filter and 1 means 
 a bandstop filter.
 
 #### fftband_do(real, imag) ####
-
 Computes one frame of the process on a complex signal (`real` and 
 `imag` are the real and imaginary parts coming from a `fftin` or 
 any FFT processing object). The internal `real` and `imag` buffers 
@@ -1099,7 +1073,6 @@ function fftband_do(real imag)
         );
     );
 );
-
 /******************************************************* 
 FFTFILTER
 =========

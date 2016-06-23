@@ -71,5 +71,5 @@ import cookdsp/pobjects.jsfx-inc
 
 @init
 
-COOKDSP_VERSION = 0.2;
+COOKDSP_VERSION = 0.3;
 

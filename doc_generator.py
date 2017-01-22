@@ -1,6 +1,6 @@
 import os, markdown, zipfile, datetime
 
-VERSION = "0.2"
+VERSION = "0.3"
 LOCATION = r'/home/olivier/.wine/drive_c/users/olivier/Application Data/REAPER/Effects/belangeo'
 MAINFILE = 'cookdsp.jsfx-inc'
 FOLDEROUT = './cookdspdoc'
@@ -159,6 +159,9 @@ def export_tutorial(name, text):
 
 with open(r"%s" % os.path.join(LOCATION, MAINFILE), 'r') as f:
     lines = f.readlines()
+
+# Add the pobjects file in the auto-generated documentation.
+lines.append("import cookdsp/pobjects.jsfx-inc")
 
 names = []
 for line in lines:

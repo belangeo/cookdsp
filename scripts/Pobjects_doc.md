@@ -10,6 +10,11 @@ arguments for its methods must be a CookDSP list instead of a
 single value. The _do() method also returns a list holding all 
 internal objects output values.  
 
+In addition to importing **cookdsp.jsfx-inc**, to use the polyphonic
+objects you also have to import **cookdsp/pobjects.jsfx-inc**. It is
+a separated import in order to accelerate the loading of the standard
+library. pobjects.jsfx-inc is a fairly big file.
+
 Available `Pobjects` are:
     
 %s
@@ -51,6 +56,7 @@ Example
     desc:Stereo Amplitude Follower
 
     import cookdsp.jsfx-inc
+    import cookdsp/pobjects.jsfx-inc
 
     slider1:10<1,100>Follower Responsiveness In Hz
 

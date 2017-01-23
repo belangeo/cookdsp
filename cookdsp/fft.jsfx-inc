@@ -1,8 +1,0 @@
-
-/* Fast Fourier Transform objects */
-import cookdsp/fftobjects.jsfx-inc
-
-/* Phase Vocoder objects */
-import cookdsp/pvocobjects.jsfx-inc
-
-@init

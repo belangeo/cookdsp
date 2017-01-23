@@ -136,6 +136,7 @@ Example
 function _pvin_init()
 (
     this.window = this.fftobj.window;
+    this.olaps = this.fftobj.olaps;
     this.size = this.fftobj.size;
     this.hsize = this.fftobj.hsize;
     this.hopsize = this.fftobj.hopsize;
@@ -309,6 +310,7 @@ Example
 function _pvout_init()
 (
     this.window = this.fftobj.window;
+    this.olaps = this.fftobj.olaps;
     this.size = this.fftobj.size;
     this.hsize = this.fftobj.hsize;
     this.hopsize = this.fftobj.hopsize;

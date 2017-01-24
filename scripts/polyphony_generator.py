@@ -46,6 +46,7 @@ for line in lines:
                             objnames[obj].append((fname, num))
 
 objlist = sorted(objnames.keys())
+
 objlist = ["`P%s`" % obj for obj in objlist]
 objstr = ""
 for i, obj in enumerate(objlist):
@@ -90,10 +91,9 @@ for obj in objnames:
     f.write(head + objects + close)
 
     # Methods
-    close = ");\n"
     for arg in argnames:
         name, num = arg[0], arg[1]
-        if "_do" in name: ### do function
+        if name.endswith("_do"): ### do function
             close = "    this.outlist;\n);\n\n"
             if num == 1:
                 creator = "function P%s_do(signal)\n(\n    num = signal[0];\n"

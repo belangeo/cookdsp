@@ -513,7 +513,7 @@ function fftin_do(signal)
         mod_ = this.hopsize * this.overcount;
         k_ = 0;
         loop(this.size,
-            this.frame[(k_+mod_)%this.size] = this.inbuf[k_] * this.wind.buffer_read(k_);
+            this.frame[(k_+mod_)%this.size] = this.inbuf[k_] * this.wind.buffer_fread(k_);
             k_ += 1;
         );
         realfft(this.frame, this.size, this.twiddle);
@@ -699,7 +699,7 @@ function fftout_do(real imag)
     irealfft(this.frame, this.size, this.twiddle);
     k_ = 0;
     while (k_ < this.size) (
-        this.accum[k_] += this.frame[(k_+mod_)%this.size] * this.ampscl * this.wind.buffer_read(k_);
+        this.accum[k_] += this.frame[(k_+mod_)%this.size] * this.ampscl * this.wind.buffer_fread(k_);
         k_ += 1;
     );
     k_ = 0;

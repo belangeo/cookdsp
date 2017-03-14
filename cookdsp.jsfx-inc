@@ -51,10 +51,7 @@ import cookdsp/fftobjects.jsfx-inc
 /* Phase Vocoder objects */
 import cookdsp/pvocobjects.jsfx-inc
 
-/* Polyphonic objects (multi-channel expansion) */
-//import cookdsp/pobjects.jsfx-inc
-
 @init
 
-COOKDSP_VERSION = 0.3;
+COOKDSP_VERSION = 0.4;
 

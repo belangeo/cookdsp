@@ -141,18 +141,19 @@ var prettyPrint;
       "Pyin_set_minfreq,Pyin_set_maxfreq,Pyin_set_cutoff,Pyin_set_size,Pyin_do,Psdelay,Psdelay_write,Psdelay_set_xfade," +
       "Psdelay_read,Psdelay_fread,Psdelay_sread,Psdelay_fsread,Psdelay_read2,Psdelay_fread2,Psdelay_sread2,Psdelay_fsread2," +
       "Psdelay_read3,Psdelay_fread3,Psdelay_sread3,Psdelay_fsread3,Ponset,Ponset_set_deltime,Ponset_set_cutoff,Ponset_set_upthresh," +
-      "Ponset_do,Ponset_set_reltime,Pphasor,Pphasor_set_freq,Pphasor_set_phase,Pphasor_reset,Pphasor_do,Plop," +
-      "Plop_set_freq,Plop_do,Pgate,Pgate_set_thresh,Pgate_set_attack,Pgate_set_release,Pgate_set_lookahead,Pgate_do," +
-      "Phip,Phip_set_freq,Phip_do,Pcompress,Pcompress_set_thresh,Pcompress_set_ratio,Pcompress_set_attack,Pcompress_set_release," +
-      "Pcompress_set_lookahead,Pcompress_do,Pbp,Pbp_set_freq,Pbp_set_q,Pbp_do,Pbuthp,Pbuthp_set_freq," +
-      "Pbuthp_do,Psine,Psine_set_freq,Psine_set_phase,Psine_reset,Psine_do,Pexpand,Pexpand_set_upthresh," +
-      "Pexpand_do,Pexpand_set_ratio,Pexpand_set_attack,Pexpand_set_release,Pexpand_set_lookahead,Pharmon,Pharmon_set_transpo,Pharmon_set_feedback," +
-      "Pharmon_set_winsize,Pharmon_do,Pwgverb,Pwgverb_set_feed,Pwgverb_set_cutoff,Pwgverb_set_bal,Pwgverb_do,Pbiquad," +
-      "Pbiquad_set_freq,Pbiquad_set_q,Pbiquad_set_type,Pbiquad_do,Pgrains,Pgrains_set_num,Pgrains_set_pitch,Pgrains_set_pos," +
-      "Pgrains_set_dur,Pgrains_set_pitrnd,Pgrains_set_posrnd,Pgrains_set,Pgrains_record,Pgrains_do,Pdisto,Pdisto_set_drive," +
-      "Pdisto_set_cutoff,Pdisto_do,Pmasr,Pmasr_set_risetime,Pmasr_get_risetime,Pmasr_set_falltime,Pmasr_get_falltime,Pmasr_do," +
-      "Pbutbr,Pbutbr_set_freq,Pbutbr_set_q,Pbutbr_do,Pbutlp,Pbutlp_set_freq,Pbutlp_do,Pbutbp," +
-      "Pbutbp_set_freq,Pbutbp_set_q,Pbutbp_do,Pzcross,Pzcross_set_size,Pzcross_do,"];
+      "Ponset_set_downthresh,Ponset_set_reltime,Ponset_do,Pphasor,Pphasor_set_freq,Pphasor_set_phase,Pphasor_reset,Pphasor_do," +
+      "Plop,Plop_set_freq,Plop_do,Pgate,Pgate_set_thresh,Pgate_set_attack,Pgate_set_release,Pgate_set_lookahead," +
+      "Pgate_do,Phip,Phip_set_freq,Phip_do,Pcompress,Pcompress_set_thresh,Pcompress_set_ratio,Pcompress_set_attack," +
+      "Pcompress_set_release,Pcompress_set_lookahead,Pcompress_do,Pbp,Pbp_set_freq,Pbp_set_q,Pbp_do,Pbuthp," +
+      "Pbuthp_set_freq,Pbuthp_do,Psine,Psine_set_freq,Psine_set_phase,Psine_reset,Psine_do,Pexpand," +
+      "Pexpand_set_upthresh,Pexpand_set_downthresh,Pexpand_set_ratio,Pexpand_set_attack,Pexpand_set_release,Pexpand_set_lookahead,Pexpand_do,Pharmon," +
+      "Pharmon_set_transpo,Pharmon_set_feedback,Pharmon_set_winsize,Pharmon_do,Pwgverb,Pwgverb_set_feed,Pwgverb_set_cutoff,Pwgverb_set_bal," +
+      "Pwgverb_do,Pbiquad,Pbiquad_set_freq,Pbiquad_set_q,Pbiquad_set_type,Pbiquad_do,Pgrains,Pgrains_set_num," +
+      "Pgrains_set_pitch,Pgrains_set_pos,Pgrains_set_dur,Pgrains_set_pitrnd,Pgrains_set_posrnd,Pgrains_set,Pgrains_record,Pgrains_do," +
+      "Pdisto,Pdisto_set_drive,Pdisto_set_cutoff,Pdisto_do,Pmasr,Pmasr_set_risetime,Pmasr_get_risetime,Pmasr_set_falltime," +
+      "Pmasr_get_falltime,Pmasr_do,Pbutbr,Pbutbr_set_freq,Pbutbr_set_q,Pbutbr_do,Pbutlp,Pbutlp_set_freq," +
+      "Pbutlp_do,Pbutbp,Pbutbp_set_freq,Pbutbp_set_q,Pbutbp_do,Pzcross,Pzcross_set_size,Pzcross_do," +
+      ""];
   var FLOW_CONTROL_KEYWORDS = [COOKDSP_KEYWORDS,"break,continue,do,else,for,if,return,while"];
   var C_KEYWORDS = [FLOW_CONTROL_KEYWORDS,"auto,case,char,const,default," + 
       "double,enum,extern,float,goto,inline,int,long,register,short,signed," +

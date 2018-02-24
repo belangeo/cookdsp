@@ -1,6 +1,6 @@
 import os, markdown, zipfile, datetime
 
-VERSION = "0.3"
+VERSION = "0.4"
 LOCATION = r'/home/olivier/.wine/drive_c/users/olivier/Application Data/REAPER/Effects/belangeo'
 MAINFILE = 'cookdsp.jsfx-inc'
 FOLDEROUT = './cookdspdoc'
@@ -120,12 +120,12 @@ page_template = """
 <HR>
 <div>See the source file : <a href="cookdsp/%s">%s</a></div>
 <HR>
-<div style="font-size: 9pt;">(c) Olivier Belanger, 2015</div>
+<div style="font-size: 9pt;">(c) Olivier Belanger, 2017</div>
 
 """
 def export_example(name, text):
     lines = text.splitlines(True)
-    text = "// JSFX-CookDSP - %s - manual example\n// (c) Olivier Belanger - 2015 - belangeo@gmail.com\n\n" % name
+    text = "// JSFX-CookDSP - %s - manual example\n// (c) Olivier Belanger - 2017 - belangeo@gmail.com\n\n" % name
     skip = True
     for line in lines:
         if skip and line.strip() == "":
@@ -142,7 +142,7 @@ def export_example(name, text):
 
 def export_tutorial(name, text):
     lines = text.splitlines(True)
-    text = "// JSFX-CookDSP - %s - tutorial example\n// (c) Olivier Belanger - 2015 - belangeo@gmail.com\n\n" % name
+    text = "// JSFX-CookDSP - %s - tutorial example\n// (c) Olivier Belanger - 2017 - belangeo@gmail.com\n\n" % name
     skip = True
     for line in lines:
         if skip and line.strip() == "":
@@ -326,7 +326,7 @@ tuttail = """
 <HR>
 <div>Download full code : <a href="%s" download>%s</a></div>
 <HR>
-<div style="font-size: 9pt;">(c) Olivier Belanger, 2015</div>
+<div style="font-size: 9pt;">(c) Olivier Belanger, 2017</div>
 """
 index.write('<h2 id="tutorials">Tutorials (Under development...)</h2>')
 
@@ -373,7 +373,7 @@ consider donating money.</div>
 <p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=9CA99DH6ES3HA" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" /></a> </p>
 
 <HR>
-<div style="font-size: 9pt;">(c) Olivier Belanger - 2015 - belangeo@gmail.com</div>
+<div style="font-size: 9pt;">(c) Olivier Belanger - 2017 - belangeo@gmail.com</div>
 """)
 index.close()
 

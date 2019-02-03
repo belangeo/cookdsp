@@ -1,7 +1,8 @@
+# encoding: utf-8
 import os, markdown, zipfile, datetime
 
 VERSION = "0.4"
-LOCATION = r'/home/olivier/.wine/drive_c/users/olivier/Application Data/REAPER/Effects/belangeo'
+LOCATION = r'/home/olivier/.config/REAPER/Effects/belangeo'
 MAINFILE = 'cookdsp.jsfx-inc'
 FOLDEROUT = './cookdspdoc'
 EXAMPLES = 'cookdsp_examples'
@@ -120,12 +121,12 @@ page_template = """
 <HR>
 <div>See the source file : <a href="cookdsp/%s">%s</a></div>
 <HR>
-<div style="font-size: 9pt;">(c) Olivier Belanger, 2017</div>
+<div style="font-size: 9pt;">(c) Olivier Belanger, 2019</div>
 
 """
 def export_example(name, text):
     lines = text.splitlines(True)
-    text = "// JSFX-CookDSP - %s - manual example\n// (c) Olivier Belanger - 2017 - belangeo@gmail.com\n\n" % name
+    text = "// JSFX-CookDSP - %s - manual example\n// (c) Olivier Belanger - 2019 - belangeo@gmail.com\n\n" % name
     skip = True
     for line in lines:
         if skip and line.strip() == "":
@@ -142,7 +143,7 @@ def export_example(name, text):
 
 def export_tutorial(name, text):
     lines = text.splitlines(True)
-    text = "// JSFX-CookDSP - %s - tutorial example\n// (c) Olivier Belanger - 2017 - belangeo@gmail.com\n\n" % name
+    text = "// JSFX-CookDSP - %s - tutorial example\n// (c) Olivier Belanger - 2019 - belangeo@gmail.com\n\n" % name
     skip = True
     for line in lines:
         if skip and line.strip() == "":
@@ -161,6 +162,7 @@ with open(r"%s" % os.path.join(LOCATION, MAINFILE), 'r') as f:
     lines = f.readlines()
 
 # Add the pobjects file in the auto-generated documentation.
+lines.append("/* Audio polyphony */")
 lines.append("import cookdsp/pobjects.jsfx-inc")
 
 names = []
@@ -265,7 +267,7 @@ index.write("""
 
 """ % (RELEASE+".zip", RELEASE+".zip", EXAMPLES+".zip", EXAMPLES+".zip", TUTORIALSPATH+".zip"))
 
-index.write("""
+index.write(r"""
 <h2 id="install">Installation</h2>
 
 <div>To install the CookDSP library, unzip the content of the download in the Reaper's Effects directory.
@@ -292,8 +294,14 @@ C:\Users\&lt;username&gt;\AppData\Roaming\REAPER\Effects
 <pre>
 /Users/&lt;username&gt;/Library/Application Support/REAPER/Effects 
 </pre>
-            
-<b>linux</b> : 
+
+<b>linux (native Reaper) </b> : 
+
+<pre>
+~/.config/REAPER/Effects 
+</pre>
+
+<b>linux (Reaper with Wine) </b> : 
 
 <pre>
 ~/.wine/drive_c/users/&lt;username&gt;/Application Data/REAPER/Effects 
@@ -326,7 +334,7 @@ tuttail = """
 <HR>
 <div>Download full code : <a href="%s" download>%s</a></div>
 <HR>
-<div style="font-size: 9pt;">(c) Olivier Belanger, 2017</div>
+<div style="font-size: 9pt;">(c) Olivier Belanger, 2019</div>
 """
 index.write('<h2 id="tutorials">Tutorials (Under development...)</h2>')
 
@@ -373,7 +381,7 @@ consider donating money.</div>
 <p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=9CA99DH6ES3HA" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" /></a> </p>
 
 <HR>
-<div style="font-size: 9pt;">(c) Olivier Belanger - 2017 - belangeo@gmail.com</div>
+<div style="font-size: 9pt;">(c) Olivier Belanger - 2019 - belangeo@gmail.com</div>
 """)
 index.close()
 
@@ -383,7 +391,6 @@ with open(PRETTYTEMPLATE, "r") as f:
 with open(PRETTIFY, "w") as f:
     for i in range(95):
         f.write(tmptext[i])
-    #f.write('  var C_TYPES = ["slider1,slider2,slider3"];\n')
     f.write('  var COOKDSP_KEYWORDS = ["')
     for i, fname in enumerate(functionnames):
         f.write("%s," % fname)
@@ -404,6 +411,6 @@ zipdir(RELEASE, RELEASE+".zip")
 zipdir(TUTORIALSPATH, TUTORIALSPATH+".zip")
 
 os.chdir(rootdir)
-rep = raw_input("Do you want to upload to ajax server (y/n) ? ")
+rep = input("Do you want to upload to ajax server (y/n) ? ")
 if rep == "y":
     os.system("scp -r cookdspdoc jeadum1@ajaxsoundstudio.com:/home/jeadum1/ajaxsoundstudio.com")

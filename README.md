@@ -24,7 +24,11 @@ OSX :
 
     /Users/<username>/Library/Application Support/REAPER/Effects 
 
-linux :
+linux (native Reaper) :
+
+    ~/.config/REAPER/Effects
+
+linux (Reaper with Wine) :
 
     ~/.wine/drive_c/users/<username>/Application Data/REAPER/Effects 
 

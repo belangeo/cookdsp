@@ -162,7 +162,7 @@ with open(r"%s" % os.path.join(LOCATION, MAINFILE), 'r') as f:
     lines = f.readlines()
 
 # Add the pobjects file in the auto-generated documentation.
-lines.append("/* Audio polyphony */")
+lines.append("/* Polyphonic objects (multi-channel expansion) */")
 lines.append("import cookdsp/pobjects.jsfx-inc")
 
 names = []

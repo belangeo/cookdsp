@@ -4,11 +4,12 @@ import os, markdown, zipfile, datetime
 VERSION = "0.4"
 LOCATION = r'/home/olivier/.config/REAPER/Effects/belangeo'
 MAINFILE = 'cookdsp.jsfx-inc'
-FOLDEROUT = './cookdspdoc'
 EXAMPLES = 'cookdsp_examples'
 REPOFOLDER = os.getcwd()
 POBJECTSEXAMPLES = os.path.join(REPOFOLDER, "Pobjects_examples")
 EXAMPLEFOLDER = os.path.join(FOLDEROUT, EXAMPLES)
+
+FOLDEROUT = './cookdspdoc'
 RELEASE = "cookdsp_%s_%s" % (VERSION, str(datetime.date.today()))
 RELEASEFOLDER = os.path.join(FOLDEROUT, RELEASE)
 TUTORIALS = "tutorials"
@@ -16,6 +17,7 @@ TUTORIALSFOLDER = os.path.join(FOLDEROUT, TUTORIALS)
 TUTORIALEXAMPLE = 'cookdsp_tutorials'
 TUTORIALSPATH = os.path.join(TUTORIALS, TUTORIALEXAMPLE)
 TUTORIALEXAMPLEFOLDER = os.path.join(TUTORIALSFOLDER, TUTORIALEXAMPLE)
+
 PRETTYTEMPLATE = './resources/prettify-template.js'
 PRETTIFY = './resources/prettify.js'
 COOKDSP_ICON = './resources/CookDSP-Icon.png'
@@ -30,12 +32,12 @@ os.mkdir(TUTORIALSFOLDER)
 os.mkdir(TUTORIALEXAMPLEFOLDER)
 
 os.system('cp %s/* %s' % (POBJECTSEXAMPLES, EXAMPLEFOLDER))
-os.system('cp "%s" %s' % (os.path.join(LOCATION, MAINFILE), FOLDEROUT))
-os.system('cp "%s" %s' % (os.path.join(LOCATION, MAINFILE), RELEASEFOLDER))
-os.system('cp "%s" %s' % (os.path.join(LOCATION, MAINFILE), REPOFOLDER))
-os.system('cp -r "%s" %s' % (os.path.join(LOCATION, "cookdsp"), FOLDEROUT))
-os.system('cp -r "%s" %s' % (os.path.join(LOCATION, "cookdsp"), RELEASEFOLDER))
-os.system('cp -r "%s" %s' % (os.path.join(LOCATION, "cookdsp"), REPOFOLDER))
+os.system('cp "%s" %s' % (os.path.join(REPOFOLDER, MAINFILE), FOLDEROUT))
+os.system('cp "%s" %s' % (os.path.join(REPOFOLDER, MAINFILE), RELEASEFOLDER))
+os.system('cp "%s" %s' % (os.path.join(REPOFOLDER, MAINFILE), LOCATION))
+os.system('cp -r "%s" %s' % (os.path.join(REPOFOLDER, "cookdsp"), FOLDEROUT))
+os.system('cp -r "%s" %s' % (os.path.join(REPOFOLDER, "cookdsp"), RELEASEFOLDER))
+os.system('cp -r "%s" %s' % (os.path.join(REPOFOLDER, "cookdsp"), LOCATION))
 
 functionnames = []
 

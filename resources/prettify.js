@@ -123,37 +123,38 @@ var prettyPrint;
       "expand,expand_set_upthresh,expand_set_downthresh,expand_set_ratio,expand_set_attack,expand_set_release,expand_set_lookahead,expand_do," +
       "disto,disto_set_drive,disto_set_cutoff,disto_do,harmon,harmon_set_transpo,harmon_set_feedback,harmon_set_winsize," +
       "harmon_do,vocoder,vocoder_set_basefreq,vocoder_set_freqspread,vocoder_set_q,vocoder_set_slope,vocoder_do,wgverb," +
-      "wgverb_set_feed,wgverb_set_cutoff,wgverb_set_bal,wgverb_do,grains_set_num,grains_set_pitch,grains_set_pos,grains_set_dur," +
-      "grains_set_pitrnd,grains_set_posrnd,grains_set,grains,grains_record,grains_do,realfft,irealfft," +
-      "fftin,fftin_resize,fftin_set_window,fftin_do,fftout,fftout_resize,fftout_set_window,fftout_get_output," +
-      "fftout_do,fftbrick,fftbrick_set_freq,fftbrick_set_type,fftbrick_resize,fftbrick_do,fftband,fftband_set_freq," +
-      "fftband_set_bw,fftband_set_type,fftband_resize,fftband_do,fftfilter,fftfilter_set_filtarray,fftfilter_resize,fftfilter_do," +
-      "fftgate,fftgate_set_thresh,fftgate_set_damp,fftgate_resize,fftgate_do,pvin,pvin_resize,pvin_set_window," +
-      "pvin_do,pvout,pvout_resize,pvout_set_window,pvout_get_output,pvout_do,pvshift,pvshift_set_shift," +
-      "pvshift_resize,pvshift_do,pvtrans,pvtrans_set_transpo,pvtrans_resize,pvtrans_do,pvverb,pvverb_set_revtime," +
-      "pvverb_set_damp,pvverb_resize,pvverb_do,Pblosc,Pblosc_set_freq,Pblosc_set_sharp,Pblosc_set_type,Pblosc_reset," +
-      "Pblosc_do,Papass,Papass_set_freq,Papass_set_bw,Papass_set_feed,Papass_do,Prandom,Prandom_set_limits," +
-      "Prandom_set_freq,Prandom_set_mode,Prandom_do,Pfollow,Pfollow_set_freq,Pfollow_do,Peq,Peq_set_freq," +
-      "Peq_set_q,Peq_set_boost,Peq_set_type,Peq_do,Pdelay,Pdelay_write,Pdelay_read,Pdelay_fread," +
-      "Pdelay_sread,Pdelay_fsread,Pdelay_read2,Pdelay_fread2,Pdelay_sread2,Pdelay_fsread2,Pdelay_read3,Pdelay_fread3," +
-      "Pdelay_sread3,Pdelay_fsread3,Pcomb,Pcomb_set_delay,Pcomb_set_feed,Pcomb_do,Pallpass,Pallpass_set_delay," +
-      "Pallpass_set_feed,Pallpass_do,Pmoog,Pmoog_set_freq,Pmoog_set_res,Pmoog_do,Pyin,Pyin_set_tolerance," +
-      "Pyin_set_minfreq,Pyin_set_maxfreq,Pyin_set_cutoff,Pyin_set_size,Pyin_do,Psdelay,Psdelay_write,Psdelay_set_xfade," +
-      "Psdelay_read,Psdelay_fread,Psdelay_sread,Psdelay_fsread,Psdelay_read2,Psdelay_fread2,Psdelay_sread2,Psdelay_fsread2," +
-      "Psdelay_read3,Psdelay_fread3,Psdelay_sread3,Psdelay_fsread3,Ponset,Ponset_set_deltime,Ponset_set_cutoff,Ponset_set_upthresh," +
-      "Ponset_set_downthresh,Ponset_set_reltime,Ponset_do,Pphasor,Pphasor_set_freq,Pphasor_set_phase,Pphasor_reset,Pphasor_do," +
-      "Plop,Plop_set_freq,Plop_do,Pgate,Pgate_set_thresh,Pgate_set_attack,Pgate_set_release,Pgate_set_lookahead," +
-      "Pgate_do,Phip,Phip_set_freq,Phip_do,Pcompress,Pcompress_set_thresh,Pcompress_set_ratio,Pcompress_set_attack," +
-      "Pcompress_set_release,Pcompress_set_lookahead,Pcompress_do,Pbp,Pbp_set_freq,Pbp_set_q,Pbp_do,Pbuthp," +
-      "Pbuthp_set_freq,Pbuthp_do,Psine,Psine_set_freq,Psine_set_phase,Psine_reset,Psine_do,Pexpand," +
-      "Pexpand_set_upthresh,Pexpand_set_downthresh,Pexpand_set_ratio,Pexpand_set_attack,Pexpand_set_release,Pexpand_set_lookahead,Pexpand_do,Pharmon," +
-      "Pharmon_set_transpo,Pharmon_set_feedback,Pharmon_set_winsize,Pharmon_do,Pwgverb,Pwgverb_set_feed,Pwgverb_set_cutoff,Pwgverb_set_bal," +
-      "Pwgverb_do,Pbiquad,Pbiquad_set_freq,Pbiquad_set_q,Pbiquad_set_type,Pbiquad_do,Pgrains,Pgrains_set_num," +
-      "Pgrains_set_pitch,Pgrains_set_pos,Pgrains_set_dur,Pgrains_set_pitrnd,Pgrains_set_posrnd,Pgrains_set,Pgrains_record,Pgrains_do," +
-      "Pdisto,Pdisto_set_drive,Pdisto_set_cutoff,Pdisto_do,Pmasr,Pmasr_set_risetime,Pmasr_get_risetime,Pmasr_set_falltime," +
-      "Pmasr_get_falltime,Pmasr_do,Pbutbr,Pbutbr_set_freq,Pbutbr_set_q,Pbutbr_do,Pbutlp,Pbutlp_set_freq," +
-      "Pbutlp_do,Pbutbp,Pbutbp_set_freq,Pbutbp_set_q,Pbutbp_do,Pzcross,Pzcross_set_size,Pzcross_do," +
-      ""];
+      "wgverb_set_feed,wgverb_set_cutoff,wgverb_set_bal,wgverb_do,chorus,chorus_set_depth,chorus_set_feed,chorus_set_bal," +
+      "chorus_do,grains_set_num,grains_set_pitch,grains_set_pos,grains_set_dur,grains_set_pitrnd,grains_set_posrnd,grains_set," +
+      "grains,grains_record,grains_do,realfft,irealfft,fftin,fftin_resize,fftin_set_window," +
+      "fftin_do,fftout,fftout_resize,fftout_set_window,fftout_get_output,fftout_do,fftbrick,fftbrick_set_freq," +
+      "fftbrick_set_type,fftbrick_resize,fftbrick_do,fftband,fftband_set_freq,fftband_set_bw,fftband_set_type,fftband_resize," +
+      "fftband_do,fftfilter,fftfilter_set_filtarray,fftfilter_resize,fftfilter_do,fftgate,fftgate_set_thresh,fftgate_set_damp," +
+      "fftgate_resize,fftgate_do,pvin,pvin_resize,pvin_set_window,pvin_do,pvout,pvout_resize," +
+      "pvout_set_window,pvout_get_output,pvout_do,pvshift,pvshift_set_shift,pvshift_resize,pvshift_do,pvtrans," +
+      "pvtrans_set_transpo,pvtrans_resize,pvtrans_do,pvverb,pvverb_set_revtime,pvverb_set_damp,pvverb_resize,pvverb_do," +
+      "Pdelay,Pdelay_write,Pdelay_read,Pdelay_fread,Pdelay_sread,Pdelay_fsread,Pdelay_read2,Pdelay_fread2," +
+      "Pdelay_sread2,Pdelay_fsread2,Pdelay_read3,Pdelay_fread3,Pdelay_sread3,Pdelay_fsread3,Psdelay,Psdelay_write," +
+      "Psdelay_set_xfade,Psdelay_read,Psdelay_fread,Psdelay_sread,Psdelay_fsread,Psdelay_read2,Psdelay_fread2,Psdelay_sread2," +
+      "Psdelay_fsread2,Psdelay_read3,Psdelay_fread3,Psdelay_sread3,Psdelay_fsread3,Pmoog,Pmoog_set_freq,Pmoog_set_res," +
+      "Pmoog_do,Pcomb,Pcomb_set_delay,Pcomb_set_feed,Pcomb_do,Pallpass,Pallpass_set_delay,Pallpass_set_feed," +
+      "Pallpass_do,Plop,Plop_set_freq,Plop_do,Phip,Phip_set_freq,Phip_do,Pbp," +
+      "Pbp_set_freq,Pbp_set_q,Pbp_do,Pbutlp,Pbutlp_set_freq,Pbutlp_do,Pbuthp,Pbuthp_set_freq," +
+      "Pbuthp_do,Pbutbp,Pbutbp_set_freq,Pbutbp_set_q,Pbutbp_do,Pbutbr,Pbutbr_set_freq,Pbutbr_set_q," +
+      "Pbutbr_do,Papass,Papass_set_freq,Papass_set_bw,Papass_set_feed,Papass_do,Pbiquad,Pbiquad_set_freq," +
+      "Pbiquad_set_q,Pbiquad_set_type,Pbiquad_do,Pfollow,Pfollow_set_freq,Pfollow_do,Pzcross,Pzcross_set_size," +
+      "Pzcross_do,Pyin,Pyin_set_tolerance,Pyin_set_minfreq,Pyin_set_maxfreq,Pyin_set_cutoff,Pyin_set_size,Pyin_do," +
+      "Ponset,Ponset_set_deltime,Ponset_set_cutoff,Ponset_set_upthresh,Ponset_set_downthresh,Ponset_set_reltime,Ponset_do,Pphasor," +
+      "Pphasor_set_freq,Pphasor_set_phase,Pphasor_reset,Pphasor_do,Psine,Psine_set_freq,Psine_set_phase,Psine_reset," +
+      "Psine_do,Prandom,Prandom_set_limits,Prandom_set_freq,Prandom_set_mode,Prandom_do,Pmasr,Pmasr_set_risetime," +
+      "Pmasr_get_risetime,Pmasr_set_falltime,Pmasr_get_falltime,Pmasr_do,Pcompress,Pcompress_set_thresh,Pcompress_set_ratio,Pcompress_set_attack," +
+      "Pcompress_set_release,Pcompress_set_lookahead,Pcompress_do,Pgate,Pgate_set_thresh,Pgate_set_attack,Pgate_set_release,Pgate_set_lookahead," +
+      "Pgate_do,Pexpand,Pexpand_set_upthresh,Pexpand_set_downthresh,Pexpand_set_ratio,Pexpand_set_attack,Pexpand_set_release,Pexpand_set_lookahead," +
+      "Pexpand_do,Peq,Peq_set_freq,Peq_set_q,Peq_set_boost,Peq_set_type,Peq_do,Pgrains," +
+      "Pgrains_set_num,Pgrains_set_pitch,Pgrains_set_pos,Pgrains_set_dur,Pgrains_set_pitrnd,Pgrains_set_posrnd,Pgrains_set,Pgrains_record," +
+      "Pgrains_do,Pdisto,Pdisto_set_drive,Pdisto_set_cutoff,Pdisto_do,Pharmon,Pharmon_set_transpo,Pharmon_set_feedback," +
+      "Pharmon_set_winsize,Pharmon_do,Pwgverb,Pwgverb_set_feed,Pwgverb_set_cutoff,Pwgverb_set_bal,Pwgverb_do,Pblosc," +
+      "Pblosc_set_freq,Pblosc_set_sharp,Pblosc_set_type,Pblosc_reset,Pblosc_do,Pchorus,Pchorus_set_depth,Pchorus_set_feed," +
+      "Pchorus_set_bal,Pchorus_do,"];
   var FLOW_CONTROL_KEYWORDS = [COOKDSP_KEYWORDS,"break,continue,do,else,for,if,return,while"];
   var C_KEYWORDS = [FLOW_CONTROL_KEYWORDS,"auto,case,char,const,default," + 
       "double,enum,extern,float,goto,inline,int,long,register,short,signed," +

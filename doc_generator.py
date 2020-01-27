@@ -7,9 +7,9 @@ MAINFILE = 'cookdsp.jsfx-inc'
 EXAMPLES = 'cookdsp_examples'
 REPOFOLDER = os.getcwd()
 POBJECTSEXAMPLES = os.path.join(REPOFOLDER, "Pobjects_examples")
-EXAMPLEFOLDER = os.path.join(FOLDEROUT, EXAMPLES)
 
 FOLDEROUT = './cookdspdoc'
+EXAMPLEFOLDER = os.path.join(FOLDEROUT, EXAMPLES)
 RELEASE = "cookdsp_%s_%s" % (VERSION, str(datetime.date.today()))
 RELEASEFOLDER = os.path.join(FOLDEROUT, RELEASE)
 TUTORIALS = "tutorials"

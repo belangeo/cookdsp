@@ -39,5 +39,5 @@ fin.ready ? (
   // New buffers ready for processing.
   // ... A simple thru...
   // compute the inverse FFT.   
-  fout.fftout_do(real, imag);
+  fout.fftout_do(fin.real, fin.imag);
 );

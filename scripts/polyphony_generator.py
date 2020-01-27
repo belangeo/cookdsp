@@ -1,7 +1,7 @@
 # Polyphonic-objects generator
 import os
 
-LOCATION = r'/home/olivier/.wine/drive_c/users/olivier/Application Data/REAPER/Effects/belangeo'
+LOCATION = '..'
 MAINFILE = 'cookdsp.jsfx-inc'
 OUTPATH = os.path.join(LOCATION, "cookdsp", "pobjects.jsfx-inc")
 DOCFILE = 'Pobjects_doc.md'
@@ -12,7 +12,7 @@ objnames = {"delay": [], "sdelay": [], "moog": [], "comb": [], "allpass": [],
             "follow": [], "zcross": [], "yin": [], "onset": [],
             "phasor": [], "sine": [], "random": [], "masr": [],
             "compress": [], "gate": [], "expand": [], "eq": [], "grains": [],
-            "disto": [], "harmon": [], "wgverb": [], "blosc": []  
+            "disto": [], "harmon": [], "wgverb": [], "blosc": [], "chorus": []
             }
 
 # Open cookdsp main file

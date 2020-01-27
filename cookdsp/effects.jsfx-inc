@@ -9,7 +9,7 @@
 
 @init
 
-/******************************************************* 
+/*******************************************************
 DISTO
 ======
 
@@ -19,7 +19,7 @@ Arc tangent distortion.
 Description
 -----------
 
-The disto object applies an arc tangent distortion with controllable 
+The disto object applies an arc tangent distortion with controllable
 drive to the input signal.
 
 It must be used with a variable name as prefix (object oriented).
@@ -29,9 +29,9 @@ Initializer
 
 #### disto(drive, cutoff) ####
 
-Initialises a distortion object. `drive` is the amount of distortion 
+Initialises a distortion object. `drive` is the amount of distortion
 applied to the signal, between 0 and 1 and `cutoff` is the cutoff
-frequency (Hz) of a second order lowpass filter applied post process.  
+frequency (Hz) of a second order lowpass filter applied post process.
 
 Methods
 -------
@@ -81,7 +81,7 @@ function disto(drive cutoff)
     drive < 0 ? drive = 0 : drive > 0.998 ? drive = 0.998;
     this.drive = drive;
     this.d = (2.0 * this.drive) / (1.0 - this.drive);
-    cutoff < 20 ? cutoff = 20 : cutoff > this.ny ? cutoff = this.ny; 
+    cutoff < 20 ? cutoff = 20 : cutoff > this.ny ? cutoff = this.ny;
     this.cutoff = cutoff;
     this.c = exp(-2 * $pi * this.cutoff / srate);
     this.y1 = this.y2 = 0.0;
@@ -96,7 +96,7 @@ function disto_set_drive(drive)
 
 function disto_set_cutoff(cutoff)
 (
-    cutoff < 20 ? cutoff = 20 : cutoff > this.ny ? cutoff = this.ny; 
+    cutoff < 20 ? cutoff = 20 : cutoff > this.ny ? cutoff = this.ny;
     this.cutoff = cutoff;
     this.c = exp(-2 * $pi * this.cutoff / srate);
 );
@@ -109,7 +109,7 @@ function disto_do(signal)
     this.y2;
 );
 
-/******************************************************* 
+/*******************************************************
 HARMON
 ======
 
@@ -119,7 +119,7 @@ Description
 -----------
 
 A harmonizer is a pitch shifter that does not stretch the original
-sound in time. I works directly on a live input, by overlapping 
+sound in time. I works directly on a live input, by overlapping
 two time-varying delay lines.
 
 It must be used with a variable name as prefix (object oriented).
@@ -130,12 +130,12 @@ Initializer
 #### harmon(transpo, feedback, winsize) ####
 
 Initializes the harmonizer object with a transposition
-factor `transpo`, defined in semitones (-48 to 48). The 
-`feedback` argument is the amount of output signal sent 
-back into the delay lines (in the range -1 to 1). The 
-`winsize` argument is the length of the delay lines (aka 
+factor `transpo`, defined in semitones (-48 to 48). The
+`feedback` argument is the amount of output signal sent
+back into the delay lines (in the range -1 to 1). The
+`winsize` argument is the length of the delay lines (aka
 window size) in seconds (must be in the range 0.001 to 1).
- 
+
 Methods
 -------
 
@@ -147,7 +147,7 @@ Sets a new transposition `transpo`, in semitones.
 
 Sets a new feedback `feedback`, between -1 and 1.
 
-#### harmon_set_winsize() ####
+#### harmon_set_winsize(winsize) ####
 
 Sets a new window size `winsize`, between 0.001 and 1 second.
 
@@ -181,8 +181,8 @@ Example
     h2.harmon_set_winsize(slider4);
 
     @sample
-    spl0 += h1.harmon_do(spl0); 
-    spl1 += h2.harmon_do(spl1); 
+    spl0 += h1.harmon_do(spl0);
+    spl1 += h2.harmon_do(spl1);
     spl0 *= 0.5; spl1 *= 0.5;
 
 ********************************************************/
@@ -237,7 +237,7 @@ function harmon_do(signal)
     val_;
 );
 
-/******************************************************* 
+/*******************************************************
 VOCODER
 =======
 
@@ -246,11 +246,11 @@ Applies the spectral envelope of a first sound to the spectrum of a second sound
 Description
 -----------
 
-The vocoder is an analysis/synthesis system, historically used to reproduce 
-human speech. In the encoder, the first input (spectral envelope) is passed 
-through a multiband filter, each band is passed through an envelope follower, 
-and the control signals from the envelope followers are communicated to the 
-decoder. The decoder applies these (amplitude) control signals to corresponding 
+The vocoder is an analysis/synthesis system, historically used to reproduce
+human speech. In the encoder, the first input (spectral envelope) is passed
+through a multiband filter, each band is passed through an envelope follower,
+and the control signals from the envelope followers are communicated to the
+decoder. The decoder applies these (amplitude) control signals to corresponding
 filters modifying the second source (exciter).
 
 It must be used with a variable name as prefix (object oriented).
@@ -260,15 +260,15 @@ Initializer
 
 #### vocoder(basefreq, freqspread, q, slope, stages) ####
 
-Initializes the vocoder object. The `basefreq` argument is the center 
-frequency of the first band. This frequency is used to compute the upper 
-band frequencies. The `freqspread` argument is the spreading factor used 
-to compute the upper band frequencies (in relation to `basefreq`). Each 
-band has a frequency according to the relation `basefreq * pow(order, freqspread)`, 
+Initializes the vocoder object. The `basefreq` argument is the center
+frequency of the first band. This frequency is used to compute the upper
+band frequencies. The `freqspread` argument is the spreading factor used
+to compute the upper band frequencies (in relation to `basefreq`). Each
+band has a frequency according to the relation `basefreq * pow(order, freqspread)`,
 where order is the harmonic rank of the band. The `q` argument is the Q of the
-filters (the inverse of the bandwidth). Higher values imply more resonance 
-around the center frequency of the filters. The `slope` argument is the time 
-response of the envelope follower. Lower values mean smoother changes, 
+filters (the inverse of the bandwidth). Higher values imply more resonance
+around the center frequency of the filters. The `slope` argument is the time
+response of the envelope follower. Lower values mean smoother changes,
 while higher values mean a better time accuracy. The `stages` argument is the
 number of bands in the filter bank. Defines the number of notches in the spectrum.
 The number of bands is only available at initialization time.
@@ -278,15 +278,15 @@ Methods
 
 #### vocoder_set_basefreq(basefreq) ####
 
-Sets a new base frequency `basefreq`, in hz, and re-compute the filters 
+Sets a new base frequency `basefreq`, in hz, and re-compute the filters
 coefficients.
 
 #### vocoder_set_freqspread(freqspread) ####
 
-Sets a new frequency spread `freqspread` and re-compute the filters 
+Sets a new frequency spread `freqspread` and re-compute the filters
 coefficients.
 
-#### vocoder_set_q() ####
+#### vocoder_set_q(q) ####
 
 Sets a new filter Q `q` and re-compute the filters coefficients.
 
@@ -309,8 +309,8 @@ Example
     slider5:24<4,64,1>Number of Bands (init only)
 
     @init
-    voc0.vocoder(slider1, slider2, slider3, slider4, slider5); 
-    voc1.vocoder(slider1, slider2, slider3, slider4, slider5); 
+    voc0.vocoder(slider1, slider2, slider3, slider4, slider5);
+    voc1.vocoder(slider1, slider2, slider3, slider4, slider5);
 
     @slider
     voc0.vocoder_set_basefreq(slider1);
@@ -422,7 +422,7 @@ function vocoder_do(signal excite)
     output_ * this.q;
 );
 
-/******************************************************* 
+/*******************************************************
 WGVERB
 ======
 
@@ -431,8 +431,8 @@ WGVERB
 Description
 -----------
 
-8 delay lines FDN (Feedback Delay Network) reverb, with feedback matrix 
-based upon physical modeling scattering junction of 8 lossless waveguides 
+8 delay lines FDN (Feedback Delay Network) reverb, with feedback matrix
+based upon physical modeling scattering junction of 8 lossless waveguides
 of equal characteristic impedance.
 
 It must be used with a variable name as prefix (object oriented).
@@ -442,12 +442,12 @@ Initializer
 
 #### wgverb(feed, cutoff, bal) ####
 
-Initializes the `wgverb` object with a feedback factor `feed`, 
+Initializes the `wgverb` object with a feedback factor `feed`,
 defined between 0 and 1. The `cutoff` argument is the cutoff
-frequency of the internal lowpass filters. The `bal` argument 
+frequency of the internal lowpass filters. The `bal` argument
 allows to control the balance between the dry signal (bal=0)
 and the reverberated one (bal=1).
- 
+
 Methods
 -------
 
@@ -459,7 +459,7 @@ Sets a new feedbakc factor `feed`, between 0 and 1.
 
 Sets a new lowpass cutoff frequency `cutoff`, in Hz.
 
-#### wgverb_set_bal() ####
+#### wgverb_set_bal(bal) ####
 
 Sets a new balance factor `bal`, between 0 and 1.
 
@@ -493,7 +493,7 @@ Example
     revR.wgverb_set_bal(slider3);
 
     @sample
-    spl0 = revL.wgverb_do(spl0) * slider4; 
+    spl0 = revL.wgverb_do(spl0) * slider4;
     spl1 = revR.wgverb_do(spl1) * slider4;
 
 ********************************************************/
@@ -542,7 +542,7 @@ function wgverb(feed cutoff bal)
     this.cutoff = cutoff;
     bal < 0 ? bal = 0 : bal > 1 ? bal = 1;
     this.bal = bal;
-    
+
     this.c2 = exp(-2 * $pi * this.cutoff / srate);
     this.ys = memalloc(8);
     this._wgverb_init();
@@ -579,7 +579,7 @@ function wgverb_do(signal)
     this.total += v_;
     this.d1.delay_write(signal + junc_ - this.ys[0]);
     this.ys[0] = v_;
-    
+
     v1_ = this.d2.delay_fread2(this.t2 + this.r2.random_do());
     v_ *= this.feed;
     v_ += (this.ys[1] - v_) * this.c2;
@@ -631,4 +631,177 @@ function wgverb_do(signal)
 
     rev_ = this.total * 0.25;
     signal + (rev_ - signal) * this.bal;
+);
+
+/*******************************************************
+CHORUS
+======
+
+8 modulated delay lines chorus processor.
+
+Description
+-----------
+
+A chorus effect occurs when individual sounds with roughly
+the same timbre and nearly (but never exactly) the same pitch
+converge and are perceived as one.
+
+It must be used with a variable name as prefix (object oriented).
+
+Initializer
+-----------
+
+#### chorus(depth, feed, bal) ####
+
+Initializes the chorus object with a depth factor `depth`,
+between 0 and 2, which is how deep are the delay line modulation.
+The `feed` argument is the amount of a delay line output signal
+from a delay sent back into its input (in the range -1 to 1).
+The `bal` argument is the balance between the dry signal (0)
+and the wet signal (1).
+
+Methods
+-------
+
+#### chorus_set_depth(depth) ####
+
+Sets a new depth factor `depth`, between 0 and 2.
+
+#### chorus_set_feed(feed) ####
+
+Sets a new feedback factor `feed`, between -1 and 1.
+
+#### chorus_set_bal(bal) ####
+
+Sets a new balance `bal`, between 0 and 1.
+
+#### chorus_do(signal) ####
+
+Processes one sample of the input signal and returns the
+chorused sample.
+
+Example
+-------
+
+    desc:Stereo Chorus
+
+    import cookdsp.jsfx-inc
+
+    slider1:0.75<0,2,0.01>Depth
+    slider2:0.25<-1,1,0.01>Feedback
+    slider3:0.6<0,1,0.01>Balance
+
+    @init
+    c1.chorus(slider1, slider3, slider4);
+    c2.chorus(slider2, slider3, slider4);
+
+    @slider
+    c1.chorus_set_depth(slider1);
+    c2.chorus_set_depth(slider1);
+    c1.chorus_set_feed(slider2);
+    c2.chorus_set_feed(slider2);
+    c1.chorus_set_bal(slider3);
+    c2.chorus_set_bal(slider3);
+
+    @sample
+    spl0 = c1.chorus_do(spl0);
+    spl1 = c2.chorus_do(spl1);
+
+********************************************************/
+function chorus(depth feed bal)
+(
+    depth < 0 ? depth = 0 : depth > 2 ? depth = 2;
+    this.depth = depth;
+    feed < -1 ? feed = -1 : feed > 1 ? feed = 1;
+    this.feed = feed;
+    bal < 0 ? bal = 0 : bal > 1 ? bal = 1;
+    this.bal = bal;
+
+    maxSize_ = srate / 4;
+    this.d1.delay(maxSize_);
+    this.d2.delay(maxSize_);
+    this.d3.delay(maxSize_);
+    this.d4.delay(maxSize_);
+    this.d5.delay(maxSize_);
+    this.d6.delay(maxSize_);
+    this.d7.delay(maxSize_);
+    this.d8.delay(maxSize_);
+
+    this.lfo1.sine(.254 * (rand(.1) + 0.95), 0);
+    this.lfo2.sine(.465 * (rand(.1) + 0.95), 0);
+    this.lfo3.sine(.657 * (rand(.1) + 0.95), 0);
+    this.lfo4.sine(.879 * (rand(.1) + 0.95), 0);
+    this.lfo5.sine(1.23 * (rand(.1) + 0.95), 0);
+    this.lfo6.sine(1.342 * (rand(.1) + 0.95), 0);
+    this.lfo7.sine(1.654 * (rand(.1) + 0.95), 0);
+    this.lfo8.sine(1.879 * (rand(.1) + 0.95), 0);
+
+    this.center1 = 0.0087 * (rand(.1) + 0.95);
+    this.center2 = 0.0102 * (rand(.1) + 0.95);
+    this.center3 = 0.0111 * (rand(.1) + 0.95);
+    this.center4 = 0.0125 * (rand(.1) + 0.95);
+    this.center5 = 0.0134 * (rand(.1) + 0.95);
+    this.center6 = 0.0151 * (rand(.1) + 0.95);
+    this.center7 = 0.0171 * (rand(.1) + 0.95);
+    this.center8 = 0.0179 * (rand(.1) + 0.95);
+
+    this.depth1 = 0.001 * this.depth;
+    this.depth2 = 0.0012 * this.depth;
+    this.depth3 = 0.0013 * this.depth;
+    this.depth4 = 0.0014 * this.depth;
+    this.depth5 = 0.0015 * this.depth;
+    this.depth6 = 0.0016 * this.depth;
+    this.depth7 = 0.002 * this.depth;
+    this.depth8 = 0.0023 * this.depth;
+);
+
+function chorus_set_depth(depth)
+(
+    depth < 0 ? depth = 0 : depth > 2 ? depth = 2;
+    this.depth = depth;
+    this.depth1 = 0.001 * this.depth;
+    this.depth2 = 0.0012 * this.depth;
+    this.depth3 = 0.0013 * this.depth;
+    this.depth4 = 0.0014 * this.depth;
+    this.depth5 = 0.0015 * this.depth;
+    this.depth6 = 0.0016 * this.depth;
+    this.depth7 = 0.002 * this.depth;
+    this.depth8 = 0.0023 * this.depth;
+);
+
+function chorus_set_feed(feed)
+(
+    feed < -1 ? feed = -1 : feed > 1 ? feed = 1;
+    this.feed = feed;
+);
+
+function chorus_set_bal(bal)
+(
+    bal < 0 ? bal = 0 : bal > 1 ? bal = 1;
+    this.bal = bal;
+);
+
+function chorus_do(signal)
+(
+    read1_ = this.d1.delay_sread2(this.lfo1.sine_do() * this.depth1 + this.center1);
+    read2_ = this.d2.delay_sread2(this.lfo2.sine_do() * this.depth2 + this.center2);
+    read3_ = this.d3.delay_sread2(this.lfo3.sine_do() * this.depth3 + this.center3);
+    read4_ = this.d4.delay_sread2(this.lfo4.sine_do() * this.depth4 + this.center4);
+    read5_ = this.d5.delay_sread2(this.lfo5.sine_do() * this.depth5 + this.center5);
+    read6_ = this.d6.delay_sread2(this.lfo6.sine_do() * this.depth6 + this.center6);
+    read7_ = this.d7.delay_sread2(this.lfo7.sine_do() * this.depth7 + this.center7);
+    read8_ = this.d8.delay_sread2(this.lfo8.sine_do() * this.depth8 + this.center8);
+
+    this.d1.delay_write(signal + read1_ * this.feed);
+    this.d2.delay_write(signal + read2_ * this.feed);
+    this.d3.delay_write(signal + read3_ * this.feed);
+    this.d4.delay_write(signal + read4_ * this.feed);
+    this.d5.delay_write(signal + read5_ * this.feed);
+    this.d6.delay_write(signal + read6_ * this.feed);
+    this.d7.delay_write(signal + read7_ * this.feed);
+    this.d8.delay_write(signal + read8_ * this.feed);
+
+    sum_ = (read1_+read2_+read3_+read4_+read5_+read6_+read7_+read8_) * 0.125;
+
+    signal + (sum_ - signal) * this.bal;
 );

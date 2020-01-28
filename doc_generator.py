@@ -1,7 +1,7 @@
 # encoding: utf-8
 import os, markdown, zipfile, datetime
 
-VERSION = "0.4"
+VERSION = "0.5"
 LOCATION = r'/home/olivier/.config/REAPER/Effects/belangeo'
 MAINFILE = 'cookdsp.jsfx-inc'
 EXAMPLES = 'cookdsp_examples'

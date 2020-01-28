@@ -53,5 +53,5 @@ import cookdsp/pvocobjects.jsfx-inc
 
 @init
 
-COOKDSP_VERSION = 0.4;
+COOKDSP_VERSION = 0.5;
 

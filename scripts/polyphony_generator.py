@@ -12,7 +12,8 @@ objnames = {"delay": [], "sdelay": [], "moog": [], "comb": [], "allpass": [],
             "follow": [], "zcross": [], "yin": [], "onset": [],
             "phasor": [], "sine": [], "random": [], "masr": [],
             "compress": [], "gate": [], "expand": [], "eq": [], "grains": [],
-            "disto": [], "harmon": [], "wgverb": [], "blosc": [], "chorus": []
+            "disto": [], "harmon": [], "wgverb": [], "blosc": [], "chorus": [],
+            "flanger": [], "waveguide": []
             }
 
 # Open cookdsp main file

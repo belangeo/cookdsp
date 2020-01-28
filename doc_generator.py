@@ -406,6 +406,8 @@ os.system("cp resources/*.css %s" % FOLDEROUT)
 os.system("cp %s %s" % (PRETTIFY, FOLDEROUT))
 os.system("cp %s %s" % (COOKDSP_ICON, FOLDEROUT))
 
+os.system('cp -r "%s" %s' % (EXAMPLEFOLDER, LOCATION))
+
 rootdir = os.getcwd()
 os.chdir(FOLDEROUT)
 zipdir(EXAMPLES, EXAMPLES+".zip")

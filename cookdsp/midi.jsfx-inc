@@ -416,7 +416,7 @@ function poly_do(pitch velocity)
             k_ = this.indexes[this.icount];
             this.voice = k_;
             this.pitches[k_] = pitch;
-            this.icount = (this.icount + 1) % this.voices;            
+            this.icount = (this.icount + 1) % this.voices;
         );
     ) : (
         while (k_ < this.voices && found_ == 0) (

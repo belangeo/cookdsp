@@ -192,6 +192,10 @@ Attributes
 
 If a midi note has been detected, this attribute will be set to `true`.
 
+#### notein.on ####
+
+`true` if note on, `false` if note off
+
 #### notein.channel ####
 
 Holds the channel number of the current midi note.
@@ -224,7 +228,7 @@ Example
     while (n.notein()) (
         // If midi event is a midi note
         n.ok ? (
-            n.velocity > 0 ? (
+            n.velocity > 0 && n.on ? (
                 // noteon 
                 midinote = n.pitch;
                 freq = mtof(midinote);
@@ -253,6 +257,7 @@ function notein()
     ret ? (
         // Retrieve midi note messages
         (msg1 & 0xF0) == 0x90 || (msg1 & 0xF0) == 0x80 ? (
+            this.on = (msg1 & 0x10) >> 4;
             this.ok = 1;
             this.channel = (msg1 & 0x0F) + 1;
             this.pitch = msg2;

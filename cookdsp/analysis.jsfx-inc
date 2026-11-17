@@ -311,7 +311,7 @@ function _min_elem_pos(buf size)
     k_ = 0;
     pos_ = 0;
     loop(size,
-        buf[k_] < buk[pos_] ? pos_ = k_;
+        buf[k_] < buf[pos_] ? pos_ = k_;
         k_ += 1;
     );
     pos_;
